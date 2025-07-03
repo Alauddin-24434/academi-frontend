@@ -1,10 +1,20 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   FileText,
   Building2,
@@ -20,8 +30,8 @@ import {
   Download,
   Search,
   MoreHorizontal,
-} from "lucide-react"
-import { motion } from "framer-motion"
+} from "lucide-react";
+import { motion } from "framer-motion";
 import {
   AreaChart,
   Area,
@@ -35,18 +45,54 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Legend,
-} from "recharts"
+} from "recharts";
 
 export default function AdminDashboard() {
   // Mock data for charts
   const applicationTrendData = [
-    { month: "Jan", applications: 245, confirmed: 89, rejected: 45, pending: 111 },
-    { month: "Feb", applications: 312, confirmed: 124, rejected: 67, pending: 121 },
-    { month: "Mar", applications: 189, confirmed: 78, rejected: 34, pending: 77 },
-    { month: "Apr", applications: 278, confirmed: 145, rejected: 56, pending: 77 },
-    { month: "May", applications: 356, confirmed: 189, rejected: 78, pending: 89 },
-    { month: "Jun", applications: 423, confirmed: 234, rejected: 89, pending: 100 },
-  ]
+    {
+      month: "Jan",
+      applications: 245,
+      confirmed: 89,
+      rejected: 45,
+      pending: 111,
+    },
+    {
+      month: "Feb",
+      applications: 312,
+      confirmed: 124,
+      rejected: 67,
+      pending: 121,
+    },
+    {
+      month: "Mar",
+      applications: 189,
+      confirmed: 78,
+      rejected: 34,
+      pending: 77,
+    },
+    {
+      month: "Apr",
+      applications: 278,
+      confirmed: 145,
+      rejected: 56,
+      pending: 77,
+    },
+    {
+      month: "May",
+      applications: 356,
+      confirmed: 189,
+      rejected: 78,
+      pending: 89,
+    },
+    {
+      month: "Jun",
+      applications: 423,
+      confirmed: 234,
+      rejected: 89,
+      pending: 100,
+    },
+  ];
 
   const revenueData = [
     { month: "Jan", revenue: 125000, target: 150000 },
@@ -55,22 +101,47 @@ export default function AdminDashboard() {
     { month: "Apr", revenue: 234000, target: 200000 },
     { month: "May", revenue: 278000, target: 250000 },
     { month: "Jun", revenue: 345000, target: 300000 },
-  ]
+  ];
 
   const universityPerformance = [
-    { name: "State University", applications: 156, acceptance: 78, revenue: 78000 },
-    { name: "Tech Institute", applications: 134, acceptance: 89, revenue: 100500 },
-    { name: "National University", applications: 98, acceptance: 67, revenue: 58800 },
-    { name: "International College", applications: 87, acceptance: 45, revenue: 87000 },
-    { name: "Engineering College", applications: 76, acceptance: 56, revenue: 45600 },
-  ]
+    {
+      name: "State University",
+      applications: 156,
+      acceptance: 78,
+      revenue: 78000,
+    },
+    {
+      name: "Tech Institute",
+      applications: 134,
+      acceptance: 89,
+      revenue: 100500,
+    },
+    {
+      name: "National University",
+      applications: 98,
+      acceptance: 67,
+      revenue: 58800,
+    },
+    {
+      name: "International College",
+      applications: 87,
+      acceptance: 45,
+      revenue: 87000,
+    },
+    {
+      name: "Engineering College",
+      applications: 76,
+      acceptance: 56,
+      revenue: 45600,
+    },
+  ];
 
   const statusDistribution = [
     { name: "Confirmed", value: 456, color: "#10B981" },
     { name: "Pending", value: 234, color: "#3B82F6" },
     { name: "Waiting", value: 123, color: "#F59E0B" },
     { name: "Rejected", value: 89, color: "#EF4444" },
-  ]
+  ];
 
   const stats = {
     totalApplications: 1247,
@@ -81,7 +152,7 @@ export default function AdminDashboard() {
     pendingPayments: 145000,
     activeUniversities: 25,
     totalStudents: 5678,
-  }
+  };
 
   const recentApplications = [
     {
@@ -114,43 +185,43 @@ export default function AdminDashboard() {
       round: 1,
       fee: 600,
     },
-  ]
+  ];
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "CONFIRMED":
-        return <CheckCircle className="h-4 w-4 text-green-600" />
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
       case "WAITING":
-        return <Clock className="h-4 w-4 text-yellow-600" />
+        return <Clock className="h-4 w-4 text-yellow-600" />;
       case "PENDING":
-        return <AlertCircle className="h-4 w-4 text-blue-600" />
+        return <AlertCircle className="h-4 w-4 text-blue-600" />;
       case "REJECTED":
-        return <XCircle className="h-4 w-4 text-red-600" />
+        return <XCircle className="h-4 w-4 text-red-600" />;
       default:
-        return <AlertCircle className="h-4 w-4 text-gray-600" />
+        return <AlertCircle className="h-4 w-4 text-gray-600" />;
     }
-  }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "CONFIRMED":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "WAITING":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "PENDING":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "REJECTED":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 },
-  }
+  };
 
   const staggerContainer = {
     animate: {
@@ -158,7 +229,7 @@ export default function AdminDashboard() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -181,7 +252,10 @@ export default function AdminDashboard() {
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
               </Button>
-              <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-blue-600 to-purple-600"
+              >
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
@@ -238,7 +312,9 @@ export default function AdminDashboard() {
             <motion.div key={index} variants={fadeInUp}>
               <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
+                  <CardTitle className="text-sm font-medium text-gray-600">
+                    {stat.title}
+                  </CardTitle>
                   <div
                     className={`h-10 w-10 rounded-lg bg-gradient-to-r ${stat.gradient} flex items-center justify-center`}
                   >
@@ -246,7 +322,9 @@ export default function AdminDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </div>
                   <p className="text-xs text-green-600 mt-1">{stat.change}</p>
                 </CardContent>
               </Card>
@@ -273,14 +351,25 @@ export default function AdminDashboard() {
                     <TrendingUp className="h-5 w-5 text-blue-600" />
                     <span>Application Trends</span>
                   </CardTitle>
-                  <CardDescription>Monthly application statistics</CardDescription>
+                  <CardDescription>
+                    Monthly application statistics
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer
                     config={{
-                      applications: { label: "Applications", color: "hsl(var(--chart-1))" },
-                      confirmed: { label: "Confirmed", color: "hsl(var(--chart-2))" },
-                      rejected: { label: "Rejected", color: "hsl(var(--chart-3))" },
+                      applications: {
+                        label: "Applications",
+                        color: "hsl(var(--chart-1))",
+                      },
+                      confirmed: {
+                        label: "Confirmed",
+                        color: "hsl(var(--chart-2))",
+                      },
+                      rejected: {
+                        label: "Rejected",
+                        color: "hsl(var(--chart-3))",
+                      },
                     }}
                     className="h-[350px]"
                   >
@@ -374,7 +463,10 @@ export default function AdminDashboard() {
                 <CardContent>
                   <ChartContainer
                     config={{
-                      revenue: { label: "Revenue", color: "hsl(var(--chart-1))" },
+                      revenue: {
+                        label: "Revenue",
+                        color: "hsl(var(--chart-1))",
+                      },
                       target: { label: "Target", color: "hsl(var(--chart-2))" },
                     }}
                     className="h-[300px]"
@@ -385,8 +477,16 @@ export default function AdminDashboard() {
                         <XAxis dataKey="month" />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="revenue" fill="#10B981" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="target" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                        <Bar
+                          dataKey="revenue"
+                          fill="#10B981"
+                          radius={[4, 4, 0, 0]}
+                        />
+                        <Bar
+                          dataKey="target"
+                          fill="#3B82F6"
+                          radius={[4, 4, 0, 0]}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -398,9 +498,15 @@ export default function AdminDashboard() {
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
                     <CardTitle>Recent Applications</CardTitle>
-                    <CardDescription>Latest application submissions</CardDescription>
+                    <CardDescription>
+                      Latest application submissions
+                    </CardDescription>
                   </div>
-                  <Button size="sm" variant="outline" className="bg-transparent">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="bg-transparent"
+                  >
                     <Search className="h-4 w-4 mr-2" />
                     View All
                   </Button>
@@ -425,7 +531,9 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                          <Badge className={getStatusColor(app.status)}>
+                            {app.status}
+                          </Badge>
                           <Button variant="outline" size="sm">
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
@@ -442,7 +550,9 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Application Management</CardTitle>
-                <CardDescription>Review and manage all student applications</CardDescription>
+                <CardDescription>
+                  Review and manage all student applications
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -454,7 +564,9 @@ export default function AdminDashboard() {
                       <div className="flex items-center space-x-4">
                         {getStatusIcon(app.status)}
                         <div>
-                          <h3 className="font-semibold text-lg">{app.studentName}</h3>
+                          <h3 className="font-semibold text-lg">
+                            {app.studentName}
+                          </h3>
                           <p className="text-gray-600">
                             {app.university} - {app.department}
                           </p>
@@ -468,11 +580,16 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                        <Badge className={getStatusColor(app.status)}>
+                          {app.status}
+                        </Badge>
                         <Button variant="outline" size="sm">
                           Review
                         </Button>
-                        <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600"
+                        >
                           Process
                         </Button>
                       </div>
@@ -487,7 +604,9 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>University Performance</CardTitle>
-                <CardDescription>Performance metrics for partner universities</CardDescription>
+                <CardDescription>
+                  Performance metrics for partner universities
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -506,8 +625,15 @@ export default function AdminDashboard() {
                       </div>
                       <div className="flex items-center space-x-4">
                         <div className="text-right">
-                          <div className="text-sm text-gray-500">Success Rate</div>
-                          <div className="font-semibold">{Math.round((uni.acceptance / uni.applications) * 100)}%</div>
+                          <div className="text-sm text-gray-500">
+                            Success Rate
+                          </div>
+                          <div className="font-semibold">
+                            {Math.round(
+                              (uni.acceptance / uni.applications) * 100,
+                            )}
+                            %
+                          </div>
                         </div>
                         <Button variant="outline" size="sm">
                           <MoreHorizontal className="h-4 w-4" />
@@ -525,18 +651,29 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>University Performance Comparison</CardTitle>
-                  <CardDescription>Applications vs acceptance rates</CardDescription>
+                  <CardDescription>
+                    Applications vs acceptance rates
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer
                     config={{
-                      applications: { label: "Applications", color: "hsl(var(--chart-1))" },
-                      acceptance: { label: "Acceptance", color: "hsl(var(--chart-2))" },
+                      applications: {
+                        label: "Applications",
+                        color: "hsl(var(--chart-1))",
+                      },
+                      acceptance: {
+                        label: "Acceptance",
+                        color: "hsl(var(--chart-2))",
+                      },
                     }}
                     className="h-[350px]"
                   >
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={universityPerformance} layout="horizontal">
+                      <BarChart
+                        data={universityPerformance}
+                        layout="horizontal"
+                      >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" />
                         <YAxis dataKey="name" type="category" width={120} />
@@ -552,7 +689,9 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Key Performance Indicators</CardTitle>
-                  <CardDescription>Important metrics at a glance</CardDescription>
+                  <CardDescription>
+                    Important metrics at a glance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
@@ -561,7 +700,10 @@ export default function AdminDashboard() {
                       <span className="font-semibold">78%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-green-500 h-3 rounded-full" style={{ width: "78%" }}></div>
+                      <div
+                        className="bg-green-500 h-3 rounded-full"
+                        style={{ width: "78%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -570,7 +712,10 @@ export default function AdminDashboard() {
                       <span className="font-semibold">94%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-blue-500 h-3 rounded-full" style={{ width: "94%" }}></div>
+                      <div
+                        className="bg-blue-500 h-3 rounded-full"
+                        style={{ width: "94%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -579,7 +724,10 @@ export default function AdminDashboard() {
                       <span className="font-semibold">92%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-purple-500 h-3 rounded-full" style={{ width: "92%" }}></div>
+                      <div
+                        className="bg-purple-500 h-3 rounded-full"
+                        style={{ width: "92%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -588,7 +736,10 @@ export default function AdminDashboard() {
                       <span className="font-semibold">99.9%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-orange-500 h-3 rounded-full" style={{ width: "99.9%" }}></div>
+                      <div
+                        className="bg-orange-500 h-3 rounded-full"
+                        style={{ width: "99.9%" }}
+                      ></div>
                     </div>
                   </div>
                 </CardContent>
@@ -600,19 +751,38 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Reports & Analytics</CardTitle>
-                <CardDescription>Generate comprehensive reports</CardDescription>
+                <CardDescription>
+                  Generate comprehensive reports
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {[
-                    { title: "Application Report", description: "Detailed application statistics", icon: FileText },
-                    { title: "Revenue Report", description: "Financial performance analysis", icon: DollarSign },
-                    { title: "University Report", description: "Partner university metrics", icon: Building2 },
+                    {
+                      title: "Application Report",
+                      description: "Detailed application statistics",
+                      icon: FileText,
+                    },
+                    {
+                      title: "Revenue Report",
+                      description: "Financial performance analysis",
+                      icon: DollarSign,
+                    },
+                    {
+                      title: "University Report",
+                      description: "Partner university metrics",
+                      icon: Building2,
+                    },
                   ].map((report, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
+                    <Card
+                      key={index}
+                      className="hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                       <CardHeader className="text-center">
                         <report.icon className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                        <CardTitle className="text-lg">{report.title}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {report.title}
+                        </CardTitle>
                         <CardDescription>{report.description}</CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -630,5 +800,5 @@ export default function AdminDashboard() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

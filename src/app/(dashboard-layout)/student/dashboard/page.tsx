@@ -1,15 +1,50 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bell, FileText, CreditCard, GraduationCap, Plus, Eye, TrendingUp, Calendar, Clock, CheckCircle, AlertCircle, DollarSign, Target, BookOpen, Award } from 'lucide-react'
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from "recharts"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import {
+  Bell,
+  FileText,
+  CreditCard,
+  GraduationCap,
+  Plus,
+  Eye,
+  TrendingUp,
+  Calendar,
+  Clock,
+  CheckCircle,
+  Award,
+} from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 export default function StudentDashboard() {
   // Mock data for charts
@@ -20,14 +55,14 @@ export default function StudentDashboard() {
     { month: "Apr", applications: 4, accepted: 2 },
     { month: "May", applications: 2, accepted: 1 },
     { month: "Jun", applications: 3, accepted: 3 },
-  ]
+  ];
 
   const statusDistribution = [
     { name: "Confirmed", value: 1, color: "#10B981" },
     { name: "Waiting", value: 1, color: "#F59E0B" },
     { name: "Pending", value: 1, color: "#3B82F6" },
     { name: "Under Review", value: 2, color: "#8B5CF6" },
-  ]
+  ];
 
   const paymentHistory = [
     { month: "Jan", amount: 500 },
@@ -36,7 +71,7 @@ export default function StudentDashboard() {
     { month: "Apr", amount: 800 },
     { month: "May", amount: 450 },
     { month: "Jun", amount: 900 },
-  ]
+  ];
 
   const applications = [
     {
@@ -52,7 +87,7 @@ export default function StudentDashboard() {
     {
       id: "2",
       university: "Tech Institute",
-      department: "Software Engineering", 
+      department: "Software Engineering",
       status: "WAITING",
       round: 2,
       applicationFee: 750,
@@ -69,7 +104,7 @@ export default function StudentDashboard() {
       createdAt: "2024-01-25",
       progress: 60,
     },
-  ]
+  ];
 
   const notices = [
     {
@@ -86,42 +121,59 @@ export default function StudentDashboard() {
       publishedAt: "2024-01-26",
       priority: "medium",
     },
-  ]
+  ];
 
   const upcomingDeadlines = [
-    { task: "Submit Documents - Tech Institute", date: "Feb 15, 2024", priority: "high" },
-    { task: "Interview - State University", date: "Feb 20, 2024", priority: "medium" },
-    { task: "Final Payment - National University", date: "Feb 25, 2024", priority: "high" },
-  ]
+    {
+      task: "Submit Documents - Tech Institute",
+      date: "Feb 15, 2024",
+      priority: "high",
+    },
+    {
+      task: "Interview - State University",
+      date: "Feb 20, 2024",
+      priority: "medium",
+    },
+    {
+      task: "Final Payment - National University",
+      date: "Feb 25, 2024",
+      priority: "high",
+    },
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "CONFIRMED": return "bg-green-100 text-green-800"
-      case "WAITING": return "bg-yellow-100 text-yellow-800"
-      case "PENDING": return "bg-blue-100 text-blue-800"
-      case "REJECTED": return "bg-red-100 text-red-800"
-      default: return "bg-gray-100 text-gray-800"
+      case "CONFIRMED":
+        return "bg-green-100 text-green-800";
+      case "WAITING":
+        return "bg-yellow-100 text-yellow-800";
+      case "PENDING":
+        return "bg-blue-100 text-blue-800";
+      case "REJECTED":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  }
+    transition: { duration: 0.5 },
+  };
 
   const staggerContainer = {
     animate: {
       transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-md shadow-sm border-b sticky top-0 z-50"
@@ -139,7 +191,9 @@ export default function StudentDashboard() {
                 <Bell className="h-4 w-4" />
                 <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full text-xs"></span>
               </Button>
-              <div className="text-sm text-gray-600">Welcome, <span className="font-semibold">John Doe</span></div>
+              <div className="text-sm text-gray-600">
+                Welcome, <span className="font-semibold">John Doe</span>
+              </div>
             </div>
           </div>
         </div>
@@ -147,7 +201,7 @@ export default function StudentDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Overview */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
           variants={staggerContainer}
           initial="initial"
@@ -160,15 +214,15 @@ export default function StudentDashboard() {
               change: "+2 this month",
               icon: FileText,
               color: "blue",
-              gradient: "from-blue-500 to-blue-600"
+              gradient: "from-blue-500 to-blue-600",
             },
             {
               title: "Confirmed Admissions",
               value: "1",
               change: "33% success rate",
               icon: CheckCircle,
-              color: "green", 
-              gradient: "from-green-500 to-green-600"
+              color: "green",
+              gradient: "from-green-500 to-green-600",
             },
             {
               title: "Pending Payments",
@@ -176,7 +230,7 @@ export default function StudentDashboard() {
               change: "2 payments due",
               icon: CreditCard,
               color: "orange",
-              gradient: "from-orange-500 to-orange-600"
+              gradient: "from-orange-500 to-orange-600",
             },
             {
               title: "Application Score",
@@ -184,19 +238,25 @@ export default function StudentDashboard() {
               change: "+0.5 this month",
               icon: Award,
               color: "purple",
-              gradient: "from-purple-500 to-purple-600"
-            }
+              gradient: "from-purple-500 to-purple-600",
+            },
           ].map((stat, index) => (
             <motion.div key={index} variants={fadeInUp}>
               <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
-                  <div className={`h-10 w-10 rounded-lg bg-gradient-to-r ${stat.gradient} flex items-center justify-center`}>
+                  <CardTitle className="text-sm font-medium text-gray-600">
+                    {stat.title}
+                  </CardTitle>
+                  <div
+                    className={`h-10 w-10 rounded-lg bg-gradient-to-r ${stat.gradient} flex items-center justify-center`}
+                  >
                     <stat.icon className="h-5 w-5 text-white" />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </div>
                   <p className="text-xs text-gray-500 mt-1">{stat.change}</p>
                 </CardContent>
               </Card>
@@ -222,13 +282,21 @@ export default function StudentDashboard() {
                     <TrendingUp className="h-5 w-5 text-blue-600" />
                     <span>Application Progress</span>
                   </CardTitle>
-                  <CardDescription>Your application journey over time</CardDescription>
+                  <CardDescription>
+                    Your application journey over time
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer
                     config={{
-                      applications: { label: "Applications", color: "hsl(var(--chart-1))" },
-                      accepted: { label: "Accepted", color: "hsl(var(--chart-2))" }
+                      applications: {
+                        label: "Applications",
+                        color: "hsl(var(--chart-1))",
+                      },
+                      accepted: {
+                        label: "Accepted",
+                        color: "hsl(var(--chart-2))",
+                      },
                     }}
                     className="h-[300px]"
                   >
@@ -238,8 +306,22 @@ export default function StudentDashboard() {
                         <XAxis dataKey="month" />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Area type="monotone" dataKey="applications" stackId="1" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.6} />
-                        <Area type="monotone" dataKey="accepted" stackId="1" stroke="#10B981" fill="#10B981" fillOpacity={0.8} />
+                        <Area
+                          type="monotone"
+                          dataKey="applications"
+                          stackId="1"
+                          stroke="#3B82F6"
+                          fill="#3B82F6"
+                          fillOpacity={0.6}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="accepted"
+                          stackId="1"
+                          stroke="#10B981"
+                          fill="#10B981"
+                          fillOpacity={0.8}
+                        />
                       </AreaChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -258,7 +340,7 @@ export default function StudentDashboard() {
                       confirmed: { label: "Confirmed", color: "#10B981" },
                       waiting: { label: "Waiting", color: "#F59E0B" },
                       pending: { label: "Pending", color: "#3B82F6" },
-                      review: { label: "Under Review", color: "#8B5CF6" }
+                      review: { label: "Under Review", color: "#8B5CF6" },
                     }}
                     className="h-[250px]"
                   >
@@ -293,10 +375,15 @@ export default function StudentDashboard() {
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
                     <CardTitle>Recent Applications</CardTitle>
-                    <CardDescription>Your latest application submissions</CardDescription>
+                    <CardDescription>
+                      Your latest application submissions
+                    </CardDescription>
                   </div>
                   <Link href="/student/applications/new">
-                    <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
+                    <Button
+                      size="sm"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600"
+                    >
                       <Plus className="h-4 w-4 mr-2" />
                       New Application
                     </Button>
@@ -305,13 +392,20 @@ export default function StudentDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {applications.slice(0, 3).map((app) => (
-                      <div key={app.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
+                      <div
+                        key={app.id}
+                        className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow"
+                      >
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-2">
                             <h4 className="font-semibold">{app.university}</h4>
-                            <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                            <Badge className={getStatusColor(app.status)}>
+                              {app.status}
+                            </Badge>
                           </div>
-                          <p className="text-sm text-gray-600">{app.department}</p>
+                          <p className="text-sm text-gray-600">
+                            {app.department}
+                          </p>
                           <div className="mt-2">
                             <div className="flex justify-between text-xs text-gray-500 mb-1">
                               <span>Progress</span>
@@ -341,12 +435,25 @@ export default function StudentDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {upcomingDeadlines.map((deadline, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border-l-4 border-orange-500 bg-orange-50 rounded-r-lg">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border-l-4 border-orange-500 bg-orange-50 rounded-r-lg"
+                      >
                         <div>
-                          <h4 className="font-medium text-sm">{deadline.task}</h4>
-                          <p className="text-xs text-gray-600 mt-1">{deadline.date}</p>
+                          <h4 className="font-medium text-sm">
+                            {deadline.task}
+                          </h4>
+                          <p className="text-xs text-gray-600 mt-1">
+                            {deadline.date}
+                          </p>
                         </div>
-                        <Badge variant={deadline.priority === 'high' ? 'destructive' : 'secondary'}>
+                        <Badge
+                          variant={
+                            deadline.priority === "high"
+                              ? "destructive"
+                              : "secondary"
+                          }
+                        >
                           {deadline.priority}
                         </Badge>
                       </div>
@@ -361,16 +468,25 @@ export default function StudentDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>All Applications</CardTitle>
-                <CardDescription>Manage and track all your university applications</CardDescription>
+                <CardDescription>
+                  Manage and track all your university applications
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {applications.map((app) => (
-                    <div key={app.id} className="flex items-center justify-between p-6 border rounded-lg hover:shadow-lg transition-all">
+                    <div
+                      key={app.id}
+                      className="flex items-center justify-between p-6 border rounded-lg hover:shadow-lg transition-all"
+                    >
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-3">
-                          <h3 className="font-semibold text-lg">{app.university}</h3>
-                          <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                          <h3 className="font-semibold text-lg">
+                            {app.university}
+                          </h3>
+                          <Badge className={getStatusColor(app.status)}>
+                            {app.status}
+                          </Badge>
                         </div>
                         <p className="text-gray-600 mb-2">{app.department}</p>
                         <div className="flex items-center space-x-4 text-sm text-gray-500">
@@ -393,7 +509,10 @@ export default function StudentDashboard() {
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </Button>
-                        <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600"
+                        >
                           Continue
                         </Button>
                       </div>
@@ -409,12 +528,17 @@ export default function StudentDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Payment History</CardTitle>
-                  <CardDescription>Your payment trends over time</CardDescription>
+                  <CardDescription>
+                    Your payment trends over time
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer
                     config={{
-                      amount: { label: "Amount (₹)", color: "hsl(var(--chart-1))" }
+                      amount: {
+                        label: "Amount (₹)",
+                        color: "hsl(var(--chart-1))",
+                      },
                     }}
                     className="h-[300px]"
                   >
@@ -424,7 +548,11 @@ export default function StudentDashboard() {
                         <XAxis dataKey="month" />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="amount" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                        <Bar
+                          dataKey="amount"
+                          fill="#3B82F6"
+                          radius={[4, 4, 0, 0]}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -434,7 +562,9 @@ export default function StudentDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Success Metrics</CardTitle>
-                  <CardDescription>Your application performance</CardDescription>
+                  <CardDescription>
+                    Your application performance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
@@ -482,7 +612,10 @@ export default function StudentDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {upcomingDeadlines.map((deadline, index) => (
-                      <div key={index} className="flex items-center space-x-4 p-4 border rounded-lg">
+                      <div
+                        key={index}
+                        className="flex items-center space-x-4 p-4 border rounded-lg"
+                      >
                         <div className="flex-shrink-0">
                           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                             <Calendar className="h-6 w-6 text-blue-600" />
@@ -490,9 +623,17 @@ export default function StudentDashboard() {
                         </div>
                         <div className="flex-1">
                           <h4 className="font-medium">{deadline.task}</h4>
-                          <p className="text-sm text-gray-600">{deadline.date}</p>
+                          <p className="text-sm text-gray-600">
+                            {deadline.date}
+                          </p>
                         </div>
-                        <Badge variant={deadline.priority === 'high' ? 'destructive' : 'secondary'}>
+                        <Badge
+                          variant={
+                            deadline.priority === "high"
+                              ? "destructive"
+                              : "secondary"
+                          }
+                        >
                           {deadline.priority}
                         </Badge>
                       </div>
@@ -511,10 +652,17 @@ export default function StudentDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {notices.map((notice) => (
-                      <div key={notice.id} className="border-l-4 border-purple-500 pl-4 py-2">
+                      <div
+                        key={notice.id}
+                        className="border-l-4 border-purple-500 pl-4 py-2"
+                      >
                         <h4 className="font-medium text-sm">{notice.title}</h4>
-                        <p className="text-xs text-gray-600 mt-1">{notice.content}</p>
-                        <p className="text-xs text-gray-500 mt-2">{notice.publishedAt}</p>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {notice.content}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-2">
+                          {notice.publishedAt}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -525,5 +673,5 @@ export default function StudentDashboard() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

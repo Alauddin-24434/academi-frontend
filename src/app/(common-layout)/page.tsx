@@ -1,8 +1,14 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   GraduationCap,
   Users,
@@ -15,19 +21,18 @@ import {
   TrendingUp,
   Shield,
   Award,
-  Zap,
-  ArrowRight,
   Play,
-} from "lucide-react"
-import Link from "next/link"
-import { motion } from "framer-motion"
+} from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function HomePage() {
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6 },
-  }
+  };
 
   const staggerContainer = {
     animate: {
@@ -35,13 +40,13 @@ export default function HomePage() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const scaleIn = {
     initial: { opacity: 0, scale: 0.8 },
     animate: { opacity: 1, scale: 1 },
     transition: { duration: 0.5 },
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -54,7 +59,10 @@ export default function HomePage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <motion.div className="flex items-center space-x-2" whileHover={{ scale: 1.05 }}>
+            <motion.div
+              className="flex items-center space-x-2"
+              whileHover={{ scale: 1.05 }}
+            >
               <GraduationCap className="h-8 w-8 text-blue-600" />
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 UniAdmit Pro
@@ -62,7 +70,10 @@ export default function HomePage() {
             </motion.div>
             <div className="flex space-x-4">
               <Link href="/login">
-                <Button variant="outline" className="hover:scale-105 transition-transform bg-transparent">
+                <Button
+                  variant="outline"
+                  className="hover:scale-105 transition-transform bg-transparent"
+                >
                   Login
                 </Button>
               </Link>
@@ -80,7 +91,11 @@ export default function HomePage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-          <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <Badge className="mb-6 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-blue-200">
               🎓 Trusted by 500+ Universities
             </Badge>
@@ -91,8 +106,9 @@ export default function HomePage() {
               </span>
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Experience the future of university admissions with our AI-powered platform. Streamline applications,
-              track progress, and connect with your dream institutions seamlessly.
+              Experience the future of university admissions with our AI-powered
+              platform. Streamline applications, track progress, and connect
+              with your dream institutions seamlessly.
             </p>
             <motion.div
               className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
@@ -135,14 +151,24 @@ export default function HomePage() {
           >
             {[
               { number: "50K+", label: "Students Enrolled", icon: Users },
-              { number: "500+", label: "Partner Universities", icon: Building2 },
+              {
+                number: "500+",
+                label: "Partner Universities",
+                icon: Building2,
+              },
               { number: "95%", label: "Success Rate", icon: TrendingUp },
               { number: "24/7", label: "Support Available", icon: Shield },
             ].map((stat, index) => (
-              <motion.div key={index} variants={scaleIn} className="text-center">
+              <motion.div
+                key={index}
+                variants={scaleIn}
+                className="text-center"
+              >
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                   <stat.icon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <div className="text-3xl font-bold text-gray-900">{stat.number}</div>
+                  <div className="text-3xl font-bold text-gray-900">
+                    {stat.number}
+                  </div>
                   <div className="text-sm text-gray-600">{stat.label}</div>
                 </div>
               </motion.div>
@@ -166,7 +192,8 @@ export default function HomePage() {
               <span className="text-blue-600"> Admission Success</span>
             </h3>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our comprehensive platform provides all the tools and features you need for a smooth admission process
+              Our comprehensive platform provides all the tools and features you
+              need for a smooth admission process
             </p>
           </motion.div>
 
@@ -197,7 +224,8 @@ export default function HomePage() {
               {
                 icon: FileText,
                 title: "Application Tracking",
-                description: "Real-time status updates from application submission to final admission confirmation",
+                description:
+                  "Real-time status updates from application submission to final admission confirmation",
                 color: "purple",
                 gradient: "from-purple-500 to-pink-500",
               },
@@ -212,14 +240,16 @@ export default function HomePage() {
               {
                 icon: Bell,
                 title: "Smart Notifications",
-                description: "Automated alerts for deadlines, status updates, and important announcements",
+                description:
+                  "Automated alerts for deadlines, status updates, and important announcements",
                 color: "red",
                 gradient: "from-red-500 to-pink-500",
               },
               {
                 icon: Award,
                 title: "Analytics & Reports",
-                description: "Comprehensive insights and detailed reports for better decision making",
+                description:
+                  "Comprehensive insights and detailed reports for better decision making",
                 color: "indigo",
                 gradient: "from-indigo-500 to-purple-500",
               },
@@ -233,7 +263,9 @@ export default function HomePage() {
                       <feature.icon className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-xl">{feature.title}</CardTitle>
-                    <CardDescription className="text-gray-600 leading-relaxed">{feature.description}</CardDescription>
+                    <CardDescription className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </CardDescription>
                   </CardHeader>
                 </Card>
               </motion.div>
@@ -252,7 +284,9 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h3>
+            <h3 className="text-4xl font-bold text-gray-900 mb-4">
+              How It Works
+            </h3>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Get started with your admission journey in just a few simple steps
             </p>
@@ -269,23 +303,30 @@ export default function HomePage() {
               {
                 step: "01",
                 title: "Create Your Profile",
-                description: "Sign up and complete your student profile with academic details and preferences",
+                description:
+                  "Sign up and complete your student profile with academic details and preferences",
                 icon: Users,
               },
               {
                 step: "02",
                 title: "Apply to Universities",
-                description: "Browse universities, select programs, and submit applications with required documents",
+                description:
+                  "Browse universities, select programs, and submit applications with required documents",
                 icon: FileText,
               },
               {
                 step: "03",
                 title: "Track & Get Admitted",
-                description: "Monitor application status, make payments, and receive admission confirmations",
+                description:
+                  "Monitor application status, make payments, and receive admission confirmations",
                 icon: CheckCircle,
               },
             ].map((step, index) => (
-              <motion.div key={index} variants={fadeInUp} className="text-center">
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="text-center"
+              >
                 <div className="relative">
                   <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6 text-xl font-bold">
                     {step.step}
@@ -296,7 +337,9 @@ export default function HomePage() {
                 </div>
                 <step.icon className="h-8 w-8 text-blue-600 mx-auto mb-4" />
                 <h4 className="text-xl font-semibold mb-3">{step.title}</h4>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                <p className="text-gray-600 leading-relaxed">
+                  {step.description}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -313,9 +356,12 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-4xl font-bold text-gray-900 mb-4">What Students Say</h3>
+            <h3 className="text-4xl font-bold text-gray-900 mb-4">
+              What Students Say
+            </h3>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Hear from students who successfully got admitted using our platform
+              Hear from students who successfully got admitted using our
+              platform
             </p>
           </motion.div>
 
@@ -354,19 +400,31 @@ export default function HomePage() {
                   <CardContent className="p-6">
                     <div className="flex items-center mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                        <Star
+                          key={i}
+                          className="h-4 w-4 text-yellow-400 fill-current"
+                        />
                       ))}
                     </div>
-                    <p className="text-gray-600 mb-6 italic">"{testimonial.text}"</p>
+                    <p className="text-gray-600 mb-6 italic">
+                      {testimonial.text}
+                    </p>
                     <div className="flex items-center">
-                      <img
+                      <Image
                         src={testimonial.image || "/placeholder.svg"}
                         alt={testimonial.name}
-                        className="w-12 h-12 rounded-full mr-4"
+                        width={48} // 12 * 4 = 48px
+                        height={48}
+                        unoptimized
+                        className="rounded-full mr-4"
+                        style={{ width: "48px", height: "48px" }} // Tailwind compatible fix
                       />
+
                       <div>
                         <div className="font-semibold">{testimonial.name}</div>
-                        <div className="text-sm text-gray-500">{testimonial.university}</div>
+                        <div className="text-sm text-gray-500">
+                          {testimonial.university}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -376,7 +434,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
@@ -388,24 +445,34 @@ export default function HomePage() {
                 <span className="text-xl font-bold">UniAdmit Pro</span>
               </div>
               <p className="text-gray-400">
-                Transforming university admissions with cutting-edge technology and seamless user experience.
+                Transforming university admissions with cutting-edge technology
+                and seamless user experience.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Students</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="/student/dashboard" className="hover:text-white transition-colors">
+                  <Link
+                    href="/student/dashboard"
+                    className="hover:text-white transition-colors"
+                  >
                     Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link href="/student/applications" className="hover:text-white transition-colors">
+                  <Link
+                    href="/student/applications"
+                    className="hover:text-white transition-colors"
+                  >
                     Applications
                   </Link>
                 </li>
                 <li>
-                  <Link href="/student/payments" className="hover:text-white transition-colors">
+                  <Link
+                    href="/student/payments"
+                    className="hover:text-white transition-colors"
+                  >
                     Payments
                   </Link>
                 </li>
@@ -415,17 +482,26 @@ export default function HomePage() {
               <h4 className="font-semibold mb-4">For Universities</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="/admin/dashboard" className="hover:text-white transition-colors">
+                  <Link
+                    href="/admin/dashboard"
+                    className="hover:text-white transition-colors"
+                  >
                     Admin Panel
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin/applications" className="hover:text-white transition-colors">
+                  <Link
+                    href="/admin/applications"
+                    className="hover:text-white transition-colors"
+                  >
                     Manage Applications
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin/reports" className="hover:text-white transition-colors">
+                  <Link
+                    href="/admin/reports"
+                    className="hover:text-white transition-colors"
+                  >
                     Reports
                   </Link>
                 </li>
@@ -435,17 +511,26 @@ export default function HomePage() {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="/help" className="hover:text-white transition-colors">
+                  <Link
+                    href="/help"
+                    className="hover:text-white transition-colors"
+                  >
                     Help Center
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="hover:text-white transition-colors">
+                  <Link
+                    href="/contact"
+                    className="hover:text-white transition-colors"
+                  >
                     Contact Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy" className="hover:text-white transition-colors">
+                  <Link
+                    href="/privacy"
+                    className="hover:text-white transition-colors"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
@@ -453,10 +538,13 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 UniAdmit Pro. All rights reserved. Made with ❤️ for students worldwide.</p>
+            <p>
+              &copy; 2024 UniAdmit Pro. All rights reserved. Made with ❤️ for
+              students worldwide.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
