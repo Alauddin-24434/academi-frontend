@@ -26,6 +26,8 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 export default function HomePage() {
   const fadeInUp = {
@@ -48,6 +50,8 @@ export default function HomePage() {
     transition: { duration: 0.5 },
   };
 
+  const user= useSelector(selectCurrentUser)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
@@ -69,14 +73,21 @@ export default function HomePage() {
               </h1>
             </motion.div>
             <div className="flex space-x-4">
-              <Link href="/login">
+             {user ?  <Link href="/login">
+                <Button
+                  variant="outline"
+                  className="hover:scale-105 transition-transform bg-transparent"
+                >
+                  Logout
+                </Button>
+              </Link>: <Link href="/login">
                 <Button
                   variant="outline"
                   className="hover:scale-105 transition-transform bg-transparent"
                 >
                   Login
                 </Button>
-              </Link>
+              </Link>}
               <Link href="/register">
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:scale-105 transition-transform">
                   Get Started

@@ -1,4 +1,5 @@
 // src/redux/features/auth/authSlice.ts
+import { RootState } from "@/redux/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
@@ -54,3 +55,7 @@ export const { updateToken, setUser, setCredentials, logout } =
   authSlice.actions;
 
 export default authSlice.reducer;
+
+
+
+export const selectCurrentUser= (state:RootState)=>state.auth.user;
