@@ -62,7 +62,7 @@ const NoticePage = () => {
       {isOpen && (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-8 rounded-lg shadow-md space-y-6 max-w-3xl mx-auto"
+          className="bg-white p-8 rounded-lg shadow-md space-y-6"
           noValidate
         >
           <input
