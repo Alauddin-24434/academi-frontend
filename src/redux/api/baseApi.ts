@@ -14,7 +14,7 @@ const mutex = new Mutex();
 
 // Basic fetchBaseQuery configuration with base URL and credentials
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+  baseUrl:"http://localhost:5000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     // Get token from Redux state

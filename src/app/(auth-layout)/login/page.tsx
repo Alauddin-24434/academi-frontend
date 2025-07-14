@@ -20,6 +20,9 @@ import { Eye, EyeOff, Github } from "lucide-react";
 import Link from "next/link";
 
 import { useLoginUserMutation } from "@/redux/features/auth/authApi";
+import { catchAsync } from "@/utils/catchAsync";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type LoginFormInputs = {
   email: string;
@@ -30,7 +33,7 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loginUser, { isLoading }] = useLoginUserMutation();
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -39,20 +42,21 @@ export default function LoginPage() {
     mode: "onTouched",
   });
 
-  const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      const response = await loginUser(data).unwrap();
-      dispatch(
-        setCredentials({
-          token: response.data.accessToken,
-          user: response.data.user,
-        }),
-      );
-      alert("Login successful");
-    } catch (error: unknown) {
-      console.error("Login failed:", error);
-    }
-  };
+  const onSubmit = catchAsync(async (data: LoginFormInputs) => {
+
+    const response = await loginUser(data).unwrap();
+
+    dispatch(
+      setCredentials({
+        token: response?.data?.accessToken,
+        user: response?.data?.user,
+      }),
+    );
+    toast.success(`${response?.message}`)
+    router.push('/')
+
+
+  })
 
   const handleOAuth = (provider: "google" | "github") => {
     if (provider === "google") {
@@ -155,6 +159,7 @@ export default function LoginPage() {
           </div>
         </CardContent>
       </Card>
+      <Toaster />
     </div>
   );
 }

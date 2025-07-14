@@ -1,9 +1,8 @@
 import baseApi from "@/redux/api/baseApi";
-import { IUniversity } from "@/types/university";
 
 const universityApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createUniversity: builder.mutation<IUniversity, Partial<IUniversity>>({
+    createUniversity: builder.mutation({
       query: (data) => ({
         url: '/universities',
         method: 'POST',
@@ -12,7 +11,7 @@ const universityApi = baseApi.injectEndpoints({
       invalidatesTags: ['University'],
     }),
 
-    getUniversities: builder.query<IUniversity[], void>({
+    getUniversities: builder.query({
       query: () => '/universities',
       providesTags: ['University'],
     }),

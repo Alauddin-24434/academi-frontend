@@ -417,8 +417,8 @@ export default function DashboardPage() {
   // In a real app, get this from auth context
   const user = useSelector(selectCurrentUser);
 
-    // const currentRole = user?.role ;
-    const currentRole : any = "UNIVERSITY_ADMIN" ;
+    const currentRole = user?.role ;
+
 
   switch (currentRole) {
     case "SUPER_ADMIN":

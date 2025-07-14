@@ -56,8 +56,8 @@ const studentMenuItems = [
 
 const DashboardSidebar = () => {
   const user = useSelector(selectCurrentUser);
-//   const currentRole = user?.role;
- const currentRole :any ="UNIVERSITY_ADMIN";
+  const currentRole = user?.role;
+ 
 
   if (!currentRole) {
     return (

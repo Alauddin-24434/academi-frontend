@@ -1,6 +1,9 @@
 "use client";
+import { useCreateUniversityMutation } from '@/redux/features/university/universityApi';
+import { catchAsync } from '@/utils/catchAsync';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 
 type UniversityFormData = {
   name: string;
@@ -44,6 +47,7 @@ const fakeUniversities: UniversityFormData[] = [
 
 const UniversityPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [createUniversity] = useCreateUniversityMutation();
 
   const {
     register,
@@ -59,17 +63,32 @@ const UniversityPage = () => {
       phone: '',
       logoUrl: '',
       websiteUrl: '',
-      applicationFee: 0,
       type: '',
       isActive: true,
     },
   });
 
-  const onSubmit = (data: UniversityFormData) => {
-    console.log('Submitted:', data);
-    reset();
-    setIsOpen(false);
-  };
+
+/***********************************************************************************************
+ ✅ University Creation Form Submit Handler
+ -----------------------------------------------------------------------------------------------
+ 📌 Uses: 
+   - catchAsync for reusable and clean error handling
+   - `.unwrap()` to allow try-catch-style behavior for RTK Query mutation
+   - Avoids repetitive try-catch blocks in the component logic
+
+ 🔁 Behavior:
+   - On success: shows toast with response message
+   - On error: handled gracefully by catchAsync
+
+************************************************************************************************/
+const onSubmit = catchAsync(async (data: UniversityFormData) => {
+  const res = await createUniversity(data).unwrap();
+  console.log(res)
+  toast.success(`${res?.message}`);
+});
+
+
 
   return (
     <div className="container mx-auto p-6 ">
@@ -147,12 +166,7 @@ const UniversityPage = () => {
               className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
-            <input
-              type="number"
-              {...register('applicationFee')}
-              placeholder="Application Fee"
-              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+       
 
             <input
               {...register('type')}
@@ -219,9 +233,8 @@ const UniversityPage = () => {
                 </td>
                 <td className="px-6 py-4 border-b">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-sm font-semibold text-white ${
-                      uni.isActive ? "bg-green-500" : "bg-red-500"
-                    }`}
+                    className={`inline-block px-3 py-1 rounded-full text-sm font-semibold text-white ${uni.isActive ? "bg-green-500" : "bg-red-500"
+                      }`}
                   >
                     {uni.isActive ? "Active" : "Inactive"}
                   </span>
@@ -231,6 +244,7 @@ const UniversityPage = () => {
           </tbody>
         </table>
       </div>
+      <Toaster />
     </div>
   );
 };

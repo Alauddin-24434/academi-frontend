@@ -57,8 +57,10 @@ export default function RegisterPage() {
       return;
     }
 
+    
+
     try {
-      const response = await registerUser(data).unwrap();
+      const response = await registerUser(data);
       dispatch(
         setCredentials({
           token: response.data.accessToken,
