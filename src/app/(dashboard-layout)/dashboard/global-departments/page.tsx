@@ -1,51 +1,49 @@
 "use client";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { catchAsync } from "@/utils/catchAsync";
+import { useCrateGlobalDepartmentMutation, useGetGlobalDepartmentsQuery } from "@/redux/features/globalDepartment/globalDepartment";
 
-type DepartmentFormData = {
+enum CategoryEnum {
+  SCIENCE = "SCIENCE",
+  HUMANITIES = "HUMANITIES",
+  COMMERCE = "COMMERCE",
+}
+
+type GlobalDepartmentFormData = {
   name: string;
   code: string;
-  seatCapacity: number;
-  universityId: string;
+  category: CategoryEnum;
 };
 
-const fakeDepartments: DepartmentFormData[] = [
-  {
-    name: "Computer Science",
-    code: "CSE",
-    seatCapacity: 100,
-    universityId: "DU",
-  },
-  {
-    name: "Business Administration",
-    code: "BBA",
-    seatCapacity: 80,
-    universityId: "NSU",
-  },
-];
-
-const DepartmentPage = () => {
+const GlobalDepartmentPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [createGlobalDepartment] = useCrateGlobalDepartmentMutation();
+
+  const { data: departmentsData } = useGetGlobalDepartmentsQuery(undefined);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<DepartmentFormData>({
+  } = useForm<GlobalDepartmentFormData>({
     defaultValues: {
       name: "",
       code: "",
-      seatCapacity: 0,
-      universityId: "",
+      category: CategoryEnum.SCIENCE, // ডিফল্ট ভ্যালু দিতে পারো
     },
   });
 
-  const onSubmit = (data: DepartmentFormData) => {
-    console.log("Submitted Department:", data);
+  const onGlobalDepartmentSubmit: SubmitHandler<GlobalDepartmentFormData> = catchAsync(async (data) => {
+    console.log("Submitted Global Department:", data);
+    await createGlobalDepartment(data).unwrap();
+
     reset();
     setIsOpen(false);
-  };
+  });
 
   return (
     <div className="container mx-auto p-6">
@@ -61,7 +59,7 @@ const DepartmentPage = () => {
 
       {isOpen && (
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onGlobalDepartmentSubmit)}
           className="bg-white p-8 rounded-lg shadow-md space-y-6"
           noValidate
         >
@@ -74,10 +72,9 @@ const DepartmentPage = () => {
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              {errors.name && (
-                <p className="text-red-500 mt-1 text-sm">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="text-red-500 mt-1 text-sm">{errors.name.message}</p>}
             </div>
+
             <div>
               <input
                 {...register("code", { required: "Code is required" })}
@@ -86,39 +83,23 @@ const DepartmentPage = () => {
                   errors.code ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              {errors.code && (
-                <p className="text-red-500 mt-1 text-sm">{errors.code.message}</p>
-              )}
+              {errors.code && <p className="text-red-500 mt-1 text-sm">{errors.code.message}</p>}
             </div>
 
             <div>
-              <input
-                type="number"
-                {...register("seatCapacity", {
-                  required: "Seat capacity is required",
-                  min: { value: 1, message: "Minimum seat capacity is 1" },
-                })}
-                placeholder="Seat Capacity"
+              <label className="font-medium block mb-1">Category</label>
+              <select
+                {...register("category", { required: "Category is required" })}
                 className={`w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.seatCapacity ? "border-red-500" : "border-gray-300"
+                  errors.category ? "border-red-500" : "border-gray-300"
                 }`}
-              />
-              {errors.seatCapacity && (
-                <p className="text-red-500 mt-1 text-sm">{errors.seatCapacity.message}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                {...register("universityId", { required: "University ID is required" })}
-                placeholder="University ID (e.g. DU)"
-                className={`w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.universityId ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.universityId && (
-                <p className="text-red-500 mt-1 text-sm">{errors.universityId.message}</p>
-              )}
+                defaultValue={CategoryEnum.SCIENCE}
+              >
+                <option value={CategoryEnum.SCIENCE}>Science</option>
+                <option value={CategoryEnum.HUMANITIES}>Humanities</option>
+                <option value={CategoryEnum.COMMERCE}>Commerce</option>
+              </select>
+              {errors.category && <p className="text-red-500 mt-1 text-sm">{errors.category.message}</p>}
             </div>
           </div>
 
@@ -131,29 +112,23 @@ const DepartmentPage = () => {
         </form>
       )}
 
+      {/* Department List Table */}
       <div className="mt-14 overflow-x-auto rounded-lg shadow border border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800 p-6 border-b">
-          Department List
-        </h2>
+        <h2 className="text-2xl font-semibold text-gray-800 p-6 border-b">Department List</h2>
         <table className="min-w-full bg-white">
           <thead className="bg-gray-50">
             <tr>
               <th className="text-left px-6 py-3 font-medium text-gray-600 border-b">Name</th>
               <th className="text-left px-6 py-3 font-medium text-gray-600 border-b">Code</th>
-              <th className="text-left px-6 py-3 font-medium text-gray-600 border-b">Seat Capacity</th>
-              <th className="text-left px-6 py-3 font-medium text-gray-600 border-b">University ID</th>
+              <th className="text-left px-6 py-3 font-medium text-gray-600 border-b">Category</th>
             </tr>
           </thead>
           <tbody>
-            {fakeDepartments.map((dep, idx) => (
-              <tr
-                key={idx}
-                className="hover:bg-gray-100 transition-colors even:bg-gray-50"
-              >
+            {departmentsData?.data?.map((dep :GlobalDepartmentFormData, idx:number) => (
+              <tr key={idx} className="hover:bg-gray-100 transition-colors even:bg-gray-50">
                 <td className="px-6 py-4 border-b text-gray-800 font-medium">{dep.name}</td>
                 <td className="px-6 py-4 border-b text-gray-700">{dep.code}</td>
-                <td className="px-6 py-4 border-b text-gray-700">{dep.seatCapacity}</td>
-                <td className="px-6 py-4 border-b text-gray-700">{dep.universityId}</td>
+                <td className="px-6 py-4 border-b text-gray-700">{dep.category}</td>
               </tr>
             ))}
           </tbody>
@@ -163,4 +138,4 @@ const DepartmentPage = () => {
   );
 };
 
-export default DepartmentPage;
+export default GlobalDepartmentPage;

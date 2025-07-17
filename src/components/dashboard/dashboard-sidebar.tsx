@@ -32,32 +32,31 @@ import {
 const superAdminMenuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Universities", href: "/dashboard/universities", icon: School },
-  { name: "Departments", href: "/dashboard/departments", icon: Building },
   { name: "Users", href: "/dashboard/users", icon: Users },
   { name: "Applications", href: "/dashboard/applications", icon: FileText },
+    { name: "Departments", href: "/dashboard/global-departments", icon: Building2 },
   { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
-  { name: "Notices", href: "/dashboard/notices", icon: Bell },
+  { name: "Circulars", href: "/dashboard/circulars", icon: FileText },
 ];
 
 const universityAdminMenuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Departments", href: "/dashboard/departments", icon: Building2 },
+  { name: "Departments", href: "/dashboard/university-departments", icon: Building2 },
   { name: "Applications", href: "/dashboard/applications", icon: FileText },
   { name: "Notices", href: "/dashboard/notices", icon: Bell },
-  { name: "Circulars", href: "/dashboard/circulars", icon: FileText },
+
 ];
 
 const studentMenuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "My Applications", href: "/dashboard/applications", icon: FileText },
   { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
-  { name: "Notices", href: "/dashboard/notices", icon: Bell },
+
 ];
 
 const DashboardSidebar = () => {
   const user = useSelector(selectCurrentUser);
   const currentRole = user?.role;
- 
 
   if (!currentRole) {
     return (
@@ -88,23 +87,30 @@ const DashboardSidebar = () => {
   }
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <Link href="/" className="flex items-center space-x-2">
-          <UniversityIcon className="h-8 w-8 text-[#bf9310]" />
-          <span className="text-2xl font-bold text-yellow-500">UV</span>
+    <Sidebar className="bg-gradient-to-b from-[#1a1c2b] to-[#12131b] text-black shadow-lg h-screen">
+      <SidebarHeader className="p-4 border-b border-gray-700">
+        <Link href="/" className="flex items-center space-x-3">
+          <UniversityIcon className="h-8 w-8 text-yellow-400" />
+          <span className="text-xl font-extrabold text-yellow-400 tracking-wide">
+            UV Portal
+          </span>
         </Link>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="p-4 space-y-4">
         <SidebarGroup>
-          <SidebarGroupLabel>{currentRole}</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm uppercase text-black tracking-wider px-2">
+            {currentRole.replace("_", " ")}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {roleBasedMenuItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.href} className="flex items-center gap-2">
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-yellow-500 hover:text-black transition-colors duration-200 text-sm font-medium"
+                    >
                       <item.icon className="w-5 h-5" />
                       <span>{item.name}</span>
                     </Link>

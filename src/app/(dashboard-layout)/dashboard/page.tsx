@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress"
 import { School, Building2, Users, FileText, CreditCard, TrendingUp, Clock, CheckCircle } from "lucide-react"
 import { useSelector } from "react-redux"
 import { selectCurrentUser } from "@/redux/features/auth/authSlice"
+import { useGetOverviewsQuery } from "@/redux/features/overview/overviewApi"
 
 // Mock user data - replace with actual auth
 
@@ -39,6 +40,9 @@ const mockStats = {
 
 function SuperAdminDashboard() {
   const stats = mockStats.SUPER_ADMIN
+
+  const {data:overviewData}=useGetOverviewsQuery(undefined);
+  console.log(overviewData)
 
   return (
     <div className="space-y-6">
@@ -177,6 +181,8 @@ function SuperAdminDashboard() {
 
 function UniversityAdminDashboard() {
   const stats = mockStats.UNIVERSITY_ADMIN
+  const {data:overviewData}=useGetOverviewsQuery(undefined);
+  console.log(overviewData)
 
   return (
     <div className="space-y-6">

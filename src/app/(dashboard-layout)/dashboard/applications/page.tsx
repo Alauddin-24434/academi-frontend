@@ -1,67 +1,48 @@
 "use client";
-import React, { useState, useMemo } from "react";
+
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetUniversitiesQuery } from "@/redux/features/university/universityApi";
+import { useGetUniversityDepartmentsQuery } from "@/redux/features/universityDepartment/universityDepartmentApi";
+import { useCreateApplicationMutation } from "@/redux/features/application/applicationApi";
+import { catchAsync } from "@/utils/catchAsync";
 
-// Fake universities
-const fakeUniversities = [
-  { id: "DU", name: "University of Dhaka" },
-  { id: "RU", name: "University of Rajshahi" },
-  { id: "KU", name: "Khulna University" },
-  { id: "NSU", name: "North South University" },
-  { id: "BRAC", name: "BRAC University" },
-];
-
-// Departments by stream
-const departmentsByStream = {
-  SCIENCE: [
-    { id: "CSE", name: "Computer Science" },
-    { id: "EEE", name: "Electrical Engineering" },
-    { id: "PHY", name: "Physics" },
-  ],
-  HUMANITIES: [
-    { id: "ENG", name: "English" },
-    { id: "HIS", name: "History" },
-    { id: "PHI", name: "Philosophy" },
-  ],
-  COMMERCE: [
-    { id: "BBA", name: "Business Admin" },
-    { id: "ACC", name: "Accounting" },
-    { id: "FIN", name: "Finance" },
-  ],
-};
-
-type ApplicationFormData = {
+interface ApplicationFormData {
   userId: string;
-  universityIds: string[];
-  departmentIds: string[];
-  stream: keyof typeof departmentsByStream | "";
+  universityId: string[];
+  departmentId: string[];
+  category: string;
   status: "PENDING" | "WAITING" | "CONFIRMED" | "REJECTED";
   round: number;
   boardName: string;
   registrationNo: string;
   rollNo: string;
-};
+}
+
+interface SelectedDepartment {
+  universityId: string;
+  departmentId: string;
+}
 
 const ApplicationPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [applications, setApplications] = useState<ApplicationFormData[]>([]);
-  const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
+  const user = useSelector(selectCurrentUser);
   const [selectedUniversities, setSelectedUniversities] = useState<string[]>([]);
-  const [selectedStream, setSelectedStream] = useState<keyof typeof departmentsByStream | "">("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDepartments, setSelectedDepartments] = useState<SelectedDepartment[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
+  const [createApplication] = useCreateApplicationMutation();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<ApplicationFormData>({
+  const { data: universitiesData = [] } = useGetUniversitiesQuery({ searchTerm });
+  const { data: universityDeptData = [] } = useGetUniversityDepartmentsQuery(undefined);
+
+  const { register, handleSubmit, setValue, reset } = useForm<ApplicationFormData>({
     defaultValues: {
-      userId: "",
-      universityIds: [],
-      departmentIds: [],
-      stream: "",
+      userId: user?.id || "",
+      universityId: [],
+      departmentId: [],
+      category: "",
       status: "PENDING",
       round: 1,
       boardName: "",
@@ -78,168 +59,160 @@ const ApplicationPage = () => {
       updated.push(id);
     }
     setSelectedUniversities(updated);
-    setValue("universityIds", updated);
+    setValue("universityId", updated);
   };
 
-  const handleDepartmentSelect = (id: string) => {
-    let updated = [...selectedDepartments];
-    if (updated.includes(id)) {
-      updated = updated.filter((d) => d !== id);
-    } else if (updated.length < 5) {
-      updated.push(id);
-    }
-    setSelectedDepartments(updated);
-    setValue("departmentIds", updated);
-  };
-
-  const filteredUniversities = useMemo(() => {
-    return fakeUniversities.filter((uni) =>
-      uni.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const toggleDepartmentForUniversity = (universityId: string, departmentId: string) => {
+    const exists = selectedDepartments.some(
+      (item) => item.universityId === universityId && item.departmentId === departmentId
     );
-  }, [searchQuery]);
+    let updated = [...selectedDepartments];
+    if (exists) {
+      updated = updated.filter(
+        (item) => !(item.universityId === universityId && item.departmentId === departmentId)
+      );
+    } else if (updated.length < 5) {
+      updated.push({ universityId, departmentId });
+    }
 
-  const onSubmit = (data: ApplicationFormData) => {
-    setApplications((prev) => [...prev, data]);
+    setSelectedDepartments(updated);
+    const deptIds = updated.map((d) => d.departmentId);
+    setValue("departmentId", deptIds);
+  };
+
+  const onSubmit = catchAsync(async (data: ApplicationFormData) => {
+    data.userId = user?.id || "";
+    data.category = category;
+    await createApplication(data).unwrap();
     reset();
     setSelectedDepartments([]);
     setSelectedUniversities([]);
-    setSelectedStream("");
-    setSearchQuery("");
-    setIsOpen(false);
-  };
+    setCategory("");
+  });
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex items-center justify-between border p-4">
-        <h1 className="text-3xl font-bold">Application Management</h1>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="bg-blue-600 text-white px-5 py-2 rounded"
-        >
-          {isOpen ? "Close Form" : "Add Application"}
-        </button>
-      </div>
+    <div className="bg-gray-50 min-h-screen p-6">
+      <div className=" bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">
+          University Application Form
+        </h1>
 
-      {isOpen && (
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded shadow space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Left */}
-            <div className="space-y-4">
-              <input {...register("userId", { required: "User ID required" })} placeholder="User ID" className="border p-3 rounded w-full" />
-             
-              <input {...register("boardName", { required: "Board Name required" })} placeholder="Board Name" className="border p-3 rounded w-full" />
-              <input {...register("registrationNo", { required: "Reg No required" })} placeholder="Registration No" className="border p-3 rounded w-full" />
-              <input {...register("rollNo", { required: "Roll No required" })} placeholder="Roll No" className="border p-3 rounded w-full" />
-         
-            </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Personal Info */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input {...register("boardName", { required: true })} placeholder="Board Name" className="input border p-3 rounded" />
+            <input {...register("registrationNo", { required: true })} placeholder="Registration No" className="input border p-3 rounded" />
+            <input {...register("rollNo", { required: true })} placeholder="Roll No" className="input border p-3 rounded" />
+          </div>
 
-            {/* Middle */}
-            <div className="space-y-4 border rounded-md p-4 h-full">
-                     <label className="font-medium block">Departments (max 5)</label>
-              <select
-                value={selectedStream}
-                onChange={(e) => {
-                  const val = e.target.value as keyof typeof departmentsByStream;
-                  setSelectedStream(val);
-                  setSelectedDepartments([]);
-                  setValue("departmentIds", []);
-                }}
-                className="border p-3 rounded w-full"
-              >
-                <option value="">Choose Group</option>
-                <option value="SCIENCE">Science</option>
-                <option value="HUMANITIES">Humanities</option>
-                <option value="COMMERCE">Commerce</option>
-              </select>
+          {/* Category */}
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-3 rounded w-full"
+          >
+            <option value="">Select Group / Category</option>
+            <option value="SCIENCE">Science</option>
+            <option value="HUMANITIES">Humanities</option>
+            <option value="COMMERCE">Commerce</option>
+          </select>
 
-         
-              <div className="grid grid-cols-1 gap-2">
-                {selectedStream &&
-                  departmentsByStream[selectedStream].map((dept) => (
-                    <label key={dept.id} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        value={dept.id}
-                        checked={selectedDepartments.includes(dept.id)}
-                        onChange={() => handleDepartmentSelect(dept.id)}
-                      />
-                      {dept.name}
-                    </label>
-                  ))}
-              </div>
-            </div>
-
-            {/* Right */}
-            <div className="border rounded-md p-4 h-full">
-              <label className="block font-semibold mb-2">Select Universities (Max 5)</label>
-              <input
-                type="text"
-                placeholder="Search university..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full mb-3 border p-2 rounded"
-              />
-              <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
-                {filteredUniversities.map((uni) => (
-                  <label key={uni.id} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      value={uni.id}
-                      checked={selectedUniversities.includes(uni.id)}
-                      onChange={() => toggleUniversity(uni.id)}
-                      className="accent-blue-600"
-                    />
-                    {uni.name}
-                  </label>
-                ))}
-              </div>
-              {selectedUniversities.length > 5 && (
-                <p className="text-red-500 text-sm mt-1">You can select up to 5 universities only.</p>
-              )}
+          {/* Universities */}
+          <div className="border rounded p-4 bg-gray-50">
+            <label className="font-semibold mb-2 block">Select Universities (Max 5)</label>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search university..."
+              className="mb-3 border p-2 rounded w-full"
+            />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto">
+              {universitiesData?.data?.map((uni: { id: string; name: string }) => (
+                <label key={uni.id} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedUniversities.includes(uni.id)}
+                    onChange={() => toggleUniversity(uni.id)}
+                  />
+                  {uni.name}
+                </label>
+              ))}
             </div>
           </div>
 
-          <button type="submit" className="w-full bg-green-600 text-white py-3 rounded font-semibold">
-            Submit
+          {/* Departments per University */}
+          <div className="space-y-6">
+            {selectedUniversities.map((universityId) => {
+              const departments = universityDeptData?.data?.filter(
+                (d) => d.universityId === universityId
+              );
+              const uniName = universitiesData?.data?.find((u) => u.id === universityId)?.name;
+
+              return (
+                <div key={universityId} className="bg-gray-100 p-4 rounded">
+                  <h3 className="font-semibold mb-2 text-blue-600">{uniName}</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {departments?.map((dep) => (
+                      <label key={dep.departmentId} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedDepartments.some(
+                            (d) =>
+                              d.universityId === universityId &&
+                              d.departmentId === dep.departmentId
+                          )}
+                          onChange={() =>
+                            toggleDepartmentForUniversity(universityId, dep.departmentId)
+                          }
+                        />
+                        {dep.department?.name || dep.departmentId}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded font-semibold"
+          >
+            Submit Application
           </button>
         </form>
-      )}
+      </div>
 
-      {/* Application List */}
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-4">Applications List</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2">User ID</th>
-                <th className="border px-4 py-2">Stream</th>
-                <th className="border px-4 py-2">Departments</th>
-                <th className="border px-4 py-2">Universities</th>
-                <th className="border px-4 py-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {applications.map((app, i) => (
-                <tr key={i}>
-                  <td className="border px-4 py-2">{app.userId}</td>
-                  <td className="border px-4 py-2">{app.stream}</td>
-                  <td className="border px-4 py-2">
-                    {app.departmentIds.map((id) => (
-                      <span key={id} className="bg-blue-100 text-sm px-2 py-1 mr-1 rounded">{id}</span>
-                    ))}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {app.universityIds.map((id) => (
-                      <span key={id} className="bg-green-100 text-sm px-2 py-1 mr-1 rounded">{id}</span>
-                    ))}
-                  </td>
-                  <td className="border px-4 py-2">{app.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* Dummy Application List */}
+      <div className=" mt-10 bg-white p-6 rounded-lg shadow">
+        <h2 className="text-2xl font-semibold mb-4">Submitted Applications (Demo)</h2>
+        <table className="w-full table-auto border-collapse border">
+          <thead className="bg-blue-100">
+            <tr>
+              <th className="border p-2">University</th>
+              <th className="border p-2">Department</th>
+              <th className="border p-2">Round</th>
+              <th className="border p-2">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Dummy Row */}
+            <tr>
+              <td className="border p-2">Dhaka University</td>
+              <td className="border p-2">CSE</td>
+              <td className="border p-2">1</td>
+              <td className="border p-2 text-green-600">PENDING</td>
+            </tr>
+            <tr>
+              <td className="border p-2">JU</td>
+              <td className="border p-2">Physics</td>
+              <td className="border p-2">1</td>
+              <td className="border p-2 text-yellow-600">WAITING</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

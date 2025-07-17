@@ -94,7 +94,7 @@ const baseQueryWithReauth: typeof baseQuery = async (
 const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth, // Use the enhanced baseQuery with reauth
-  tagTypes: ["User", "University"], // Tags for cache invalidation
+  tagTypes: ["User", "University","GlobalDepartment","UniversityDepartment", "Application","Notice","Event"], // Tags for cache invalidation
   endpoints: () => ({}), // Endpoints will be added here
 });
 
