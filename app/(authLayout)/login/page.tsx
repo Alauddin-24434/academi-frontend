@@ -9,16 +9,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, ArrowLeft } from "lucide-react"
+import { useLoginUserMutation } from "@/redux/features/auth/authApi"
+import { useAppDispatch } from "@/redux/hooks"
+import { setUser } from "@/redux/features/auth/authSlice"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loginUser] = useLoginUserMutation();
+  const dispatch = useAppDispatch();
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     // Handle login logic here
-    console.log("Login attempt:", { email, password })
+    try {
+      const res = await loginUser({ email, password }).unwrap();
+      if (res?.success === true) {
+
+        dispatch(setUser({ user: res?.data?.user, token: res?.data?.accessToken }))
+      }
+
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

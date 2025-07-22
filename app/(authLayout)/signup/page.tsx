@@ -10,24 +10,34 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Eye, EyeOff, ArrowLeft } from "lucide-react"
+import { useSignUpUserMutation } from "@/redux/features/auth/authApi"
+import { useAppDispatch } from "@/redux/hooks"
+import { setUser } from "@/redux/features/auth/authSlice"
 
 export default function SignUpPage() {
+  const [signUpUser] = useSignUpUserMutation();
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    role: "",
-    institution: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     // Handle signup logic here
     console.log("Signup attempt:", formData)
+
+    try {
+      const res = await signUpUser(formData).unwrap();
+      if (res?.success === true) {
+
+        dispatch(setUser({ user: res?.data?.user, token: res?.data?.accessToken }))
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -58,36 +68,22 @@ export default function SignUpPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-white">
-                    First Name
-                  </Label>
-                  <Input
-                    id="firstName"
-                    type="text"
-                    placeholder="John"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-purple-200"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-white">
-                    Last Name
-                  </Label>
-                  <Input
-                    id="lastName"
-                    type="text"
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-purple-200"
-                    required
-                  />
-                </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-white">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-purple-200"
+                  required
+                />
               </div>
+
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">
@@ -104,37 +100,7 @@ export default function SignUpPage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="role" className="text-white">
-                  Role
-                </Label>
-                <Select onValueChange={(value) => handleInputChange("role", value)}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                    <SelectValue placeholder="Select your role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Administrator</SelectItem>
-                    <SelectItem value="teacher">Teacher</SelectItem>
-                    <SelectItem value="student">Student</SelectItem>
-                    <SelectItem value="parent">Parent</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="institution" className="text-white">
-                  Institution Name
-                </Label>
-                <Input
-                  id="institution"
-                  type="text"
-                  placeholder="Your School/College Name"
-                  value={formData.institution}
-                  onChange={(e) => handleInputChange("institution", e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-purple-200"
-                  required
-                />
-              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white">
@@ -160,43 +126,8 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-white">
-                  Confirm Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-purple-200 pr-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-200 hover:text-white"
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
 
-              <div className="flex items-center space-x-2">
-                <input id="terms" type="checkbox" className="rounded border-white/20 bg-white/10" required />
-                <Label htmlFor="terms" className="text-sm text-purple-100">
-                  I agree to the{" "}
-                  <Link href="#" className="text-orange-400 hover:text-orange-300">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="#" className="text-orange-400 hover:text-orange-300">
-                    Privacy Policy
-                  </Link>
-                </Label>
-              </div>
+
 
               <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                 Create Account

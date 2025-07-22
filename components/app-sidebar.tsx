@@ -13,6 +13,11 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+// import { useSelector } from "react-redux";
+// import { selectUser } from "@/redux/features/auth/authSlice";
+
+
+
 
 import {
   Sidebar,
@@ -24,56 +29,45 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const menuItems = [
-  {
-    title: "Dashboard",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Students",
-    url: "/students",
-    icon: Users,
-  },
-  {
-    title: "Teachers",
-    url: "/teachers",
-    icon: GraduationCap,
-  },
-  {
-    title: "Event",
-    url: "/events",
-    icon: Calendar,
-  },
-  {
-    title: "Finance",
-    url: "/finance",
-    icon: DollarSign,
-  },
-  {
-    title: "Food",
-    url: "/food",
-    icon: UtensilsCrossed,
-  },
-  {
-    title: "User",
-    url: "/user",
-    icon: User,
-  },
-  {
-    title: "Chat",
-    url: "/chat",
-    icon: MessageCircle,
-  },
-  {
-    title: "Latest Activity",
-    url: "/activity",
-    icon: Activity,
-  },
+// Role wise menu items
+const adminMenuItems = [
+  { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "Students", url: "/dashboard/students", icon: Users },
+  { title: "Teachers", url: "/dashboard/teachers", icon: GraduationCap },
+  { title: "Event", url: "/dashboard/events", icon: Calendar },
+  { title: "Finance", url: "/dashboard/finance", icon: DollarSign },
+  { title: "Food", url: "/dashboard/food", icon: UtensilsCrossed },
+  { title: "User", url: "/dashboard/user", icon: User },
+  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
+  { title: "Latest Activity", url: "/dashboard/activity", icon: Activity },
+]
+
+const teacherMenuItems = [
+  { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "Event", url: "/dashboard/events", icon: Calendar },
+  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
+]
+
+const studentMenuItems = [
+  { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "Food", url: "/dashboard/food", icon: UtensilsCrossed },
+  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
+  // const user = useSelector(selectUser)
+  const role ="STUDENT" 
+
+  let menuItems :any=[]
+
+  if (role === "ADMIN") {
+    menuItems = adminMenuItems
+  } else if (role === "TEACHER") {
+    menuItems = teacherMenuItems
+  } else if (role === "STUDENT") {
+    menuItems = studentMenuItems
+  }
 
   return (
     <Sidebar className="border-r-0">
