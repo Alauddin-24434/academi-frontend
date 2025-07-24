@@ -10,14 +10,17 @@ import {
   User,
   MessageCircle,
   Activity,
+  LayoutDashboard,
+  User2,
+  BookOpenCheck,
+  CreditCard,
+  Bell,
 } from "lucide-react"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 // import { useSelector } from "react-redux";
 // import { selectUser } from "@/redux/features/auth/authSlice";
-
-
-
 
 import {
   Sidebar,
@@ -28,6 +31,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useSelector } from "react-redux"
+import { selectCurrentUser } from "@/redux/features/auth/authSlice"
 
 // Role wise menu items
 const adminMenuItems = [
@@ -49,17 +54,22 @@ const teacherMenuItems = [
 ]
 
 const studentMenuItems = [
-  { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Food", url: "/dashboard/food", icon: UtensilsCrossed },
-  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "My Profile", url: "/dashboard/student/profile", icon: User2 },
+  { title: "Join Requests", url: "/dashboard/student/group-join-requests", icon: BookOpenCheck },
+  { title: "Messages", url: "/dashboard/student/messages", icon: MessageCircle },
+  { title: "Payments", url: "/dashboard/student/payments", icon: CreditCard },
+  { title: "Academic Info", url: "/dashboard/student/academic", icon: GraduationCap },
+  { title: "Notices / Announcements", url: "/dashboard/student/notices", icon: Bell },
+  { title: "Admission", url: "/dashboard/admission", icon: GraduationCap },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
-  // const user = useSelector(selectUser)
-  const role ="STUDENT" 
+  const user = useSelector(selectCurrentUser)
+  const role =user?.role;
 
-  let menuItems :any=[]
+  let menuItems: any = []
 
   if (role === "ADMIN") {
     menuItems = adminMenuItems
@@ -71,7 +81,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r-0">
-      <div className="flex h-full w-full flex-col bg-[#6366F1]">
+      <div className="flex h-full w-full flex-col bg-teal-600">
         <SidebarHeader className="border-b border-white/10 p-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">

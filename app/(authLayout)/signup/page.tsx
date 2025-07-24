@@ -19,7 +19,6 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   })
@@ -68,21 +67,6 @@ export default function SignUpPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-white">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-purple-200"
-                  required
-                />
-              </div>
 
 
               <div className="space-y-2">

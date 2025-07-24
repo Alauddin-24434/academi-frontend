@@ -51,13 +51,15 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // ===== ✅ Get a single user by ID =====
-    getSingleUser: build.query({
+    getUserByUserId: build.query({
       query: (id: string) => ({
         url: `/users/${id}`,
         method: 'GET',
       }),
       providesTags: ['User'],
     }),
+    
+
 
     // ===== ✅ Update a user (partial update with PATCH) =====
     updateUser: build.mutation({
@@ -77,7 +79,7 @@ export const {
   useLoginUserMutation,
   useGetMeQuery,
   useGetUsersQuery,
-  useGetSingleUserQuery,
+  useGetUserByUserIdQuery,
   useUpdateUserMutation,
 } = authApi;
 

@@ -86,7 +86,8 @@ const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: [
     'User',
-  'Admission'
+  'Admission',
+  'Department'
   ],
   endpoints: () => ({}),
 });

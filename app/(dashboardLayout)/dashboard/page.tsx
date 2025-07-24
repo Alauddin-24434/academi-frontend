@@ -77,8 +77,7 @@ const foodMenu = [
 export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Dashboard" />
-
+  
       <div className="p-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
