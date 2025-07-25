@@ -1,3 +1,6 @@
+
+
+
 "use client";
 import { useGetUserByUserIdQuery } from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
@@ -31,15 +34,6 @@ type Student = {
   dateOfBirth: string;
   departmentId: string;
   department: Department;
-};
-
-type User = {
-  id: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  updatedAt: string;
-  student: Student;
 };
 
 export default function ProfilePage() {
@@ -78,36 +72,34 @@ export default function ProfilePage() {
     );
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-50 p-16 flex flex-col">
-      {/* HEADER */}
-      <header className="mb-12 text-center">
-        <h1 className="text-5xl font-extrabold text-indigo-700 drop-shadow-md">
-          👤 Student Profile
-        </h1>
-        <p className="text-indigo-500 mt-2 text-lg">
-          Welcome back, <span className="font-semibold">{student.fullName}</span>
-        </p>
-      </header>
-
+    <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-teal-50 p-6 md:p-10">
       {/* MAIN CONTENT */}
-      <section className="flex flex-1 gap-16">
-        {/* LEFT SIDE - PROFILE PHOTO */}
-        <div className="flex-shrink-0 rounded-3xl overflow-hidden shadow-2xl border-8 border-indigo-300 w-96 h-96">
-          <img
-            src={student.passportPhoto}
-            alt={`${student.fullName} Passport`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* RIGHT SIDE - INFO */}
-        <div className="flex-grow bg-white rounded-3xl shadow-2xl p-12 flex flex-col justify-between">
+      <section className="flex flex-col-reverse lg:flex-row gap-8 items-start">
+        {/* LEFT SIDE - INFO */}
+        <div className="flex-grow bg-white rounded-2xl shadow-md p-6 md:p-10 space-y-10">
           {/* Personal Info */}
-          <div>
-            <h2 className="text-4xl font-bold text-indigo-700 mb-8 border-b-4 border-indigo-300 pb-4">
-              Personal Information
-            </h2>
-            <div className="grid grid-cols-2 gap-y-6 gap-x-12 text-xl text-gray-700">
+          <div className="">
+
+
+            <div className="flex flex-row justify-between items-center mb-4 border-b border-teal-300 pb-2 ">
+              <div>
+                <h1 className="text-5xl font-extrabold text-teal-700 drop-shadow-md">
+                   Student Profile
+                </h1>
+                <p className="text-teal-500 mt-2 text-lg">
+                  Welcome back, <span className="font-semibold">{student.fullName}</span>
+                </p>
+              </div>
+              {/* RIGHT SIDE - PROFILE PHOTO */}
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-md overflow-hidden border-4 border-teal-400 shadow-lg mx-auto lg:mx-0">
+                <img
+                  src={student.passportPhoto}
+                  alt={`${student.fullName} Passport`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm text-gray-700">
               <InfoRow label="Full Name" value={student.fullName} />
               <InfoRow label="Father's Name" value={student.fatherName} />
               <InfoRow label="Mother's Name" value={student.motherName} />
@@ -124,26 +116,31 @@ export default function ProfilePage() {
           </div>
 
           {/* Department Info */}
-          <div className="mt-16">
-            <h2 className="text-4xl font-bold text-indigo-700 mb-6 border-b-4 border-indigo-300 pb-4">
-              Department & Faculty
+          <div>
+            <h2 className="text-2xl font-bold text-teal-700 mb-4 border-b border-teal-300 pb-2">
+              🏫 Department & Faculty
             </h2>
-            <div className="text-gray-700 text-2xl space-y-4">
+            <div className="space-y-2 text-gray-700 text-sm">
               <p>
-                <span className="font-semibold">Department Name:</span> {student.department.name}
+                <span className="font-semibold">Department Name:</span>{" "}
+                {student.department.name}
               </p>
               <p>
-                <span className="font-semibold">Department Code:</span> {student.department.code}
+                <span className="font-semibold">Department Code:</span>{" "}
+                {student.department.code}
               </p>
               <p>
-                <span className="font-semibold">Faculty:</span> {student.department.faculty.name}
+                <span className="font-semibold">Faculty:</span>{" "}
+                {student.department.faculty.name}
               </p>
-              <p className="text-lg italic text-indigo-400 max-w-xl">
+              <p className="text-sm italic text-teal-500">
                 {student.department.faculty.description}
               </p>
             </div>
           </div>
         </div>
+
+
       </section>
     </main>
   );
@@ -152,8 +149,8 @@ export default function ProfilePage() {
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-indigo-700 font-semibold">{label}</p>
-      <p className="mt-1">{value}</p>
+      <p className="text-xs font-medium text-teal-600">{label}</p>
+      <p className="mt-1 text-gray-800 font-semibold text-sm">{value}</p>
     </div>
   );
 }

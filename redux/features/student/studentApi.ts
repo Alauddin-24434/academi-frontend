@@ -21,7 +21,7 @@ const studentApi = baseApi.injectEndpoints({
 
     // GET: Get Students by User ID
     getStudentByUserId: build.query({
-      query: (userId) => `/students/${userId}`, // adjust URL based on your backend route
+      query: (userId) => `/students/user/${userId}`, // adjust URL based on your backend route
       providesTags: ["Admission"],
     }),
   }),

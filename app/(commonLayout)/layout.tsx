@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div >
       {/* Navigation */}
       <nav className="bg-white shadow-sm py-4">
         <div className="container mx-auto px-4">
@@ -42,7 +42,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </nav>
-      <main>{children}</main>
+      <main >{children}</main>
     </div>
   );
 };

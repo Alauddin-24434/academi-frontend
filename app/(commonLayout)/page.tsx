@@ -2,51 +2,35 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { useLenis } from "@/hooks/use-lenis"
 import {
-  Clock,
-  Phone,
-  Facebook,
-  Twitter,
-  Instagram,
-  Dribbble,
   ArrowRight,
   GraduationCap,
   Users,
   Calendar,
   BookOpen,
-  MessageCircle,
-  MapPin,
-  Mail,
-  Heart,
   Award,
   Building,
   Globe,
-  Trophy,
-  FileText,
-  CheckCircle,
   UserCheck,
-  Briefcase,
-  Library,
-  Coffee,
-  Music,
+  Badge,
+  MessageSquare,
+  CreditCard,
+  Building2,
+  Star,
+  Shield,
 } from "lucide-react"
 import HeroSection from "@/components/home-section/heroSection"
+import Link from "next/link"
 
 export default function HomePage() {
   useLenis()
-
   return (
-    <div className="min-h-screen bg-white">
-
-
-   
-
+    <div className="min-h-screen">
       {/* Hero Section - Full Height with Fixed Background */}
       <HeroSection />
-
       {/* 2. About Section */}
       <section className="py-20" id="about">
         <div className="container mx-auto px-4">
@@ -66,7 +50,6 @@ export default function HomePage() {
               <div>
                 <p className="text-teal-600 font-medium mb-4">About Our Institution</p>
                 <h2 className="text-3xl font-bold mb-8">Excellence in Higher Education Since 1995</h2>
-
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="bg-teal-100 p-3 rounded-lg">
@@ -80,7 +63,6 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start space-x-4">
                     <div className="bg-teal-100 p-3 rounded-lg">
                       <Globe className="w-6 h-6 text-teal-600" />
@@ -93,7 +75,6 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start space-x-4">
                     <div className="bg-teal-100 p-3 rounded-lg">
                       <Building className="w-6 h-6 text-teal-600" />
@@ -112,410 +93,356 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Stats Section */}
-      <section className="py-20 bg-gray-900 text-white relative">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-4 relative">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <GraduationCap className="w-8 h-8" />
-              </div>
-              <h3 className="text-3xl font-bold mb-2">15,000+</h3>
-              <p className="text-gray-300">Students</p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8" />
-              </div>
-              <h3 className="text-3xl font-bold mb-2">500+</h3>
-              <p className="text-gray-300">Faculty Members</p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-8 h-8" />
-              </div>
-              <h3 className="text-3xl font-bold mb-2">50+</h3>
-              <p className="text-gray-300">Degree Programs</p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Trophy className="w-8 h-8" />
-              </div>
-              <h3 className="text-3xl font-bold mb-2">25+</h3>
-              <p className="text-gray-300">Years of Excellence</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* 4. Faculty Section */}
-      <section className="py-20 bg-gray-50" id="faculty">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-teal-600 font-medium mb-4">Our Faculty</p>
-            <h2 className="text-3xl font-bold">Meet Our Distinguished Professors</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                name: "Dr. Sarah Ahmed",
-                title: "Professor of Computer Science",
-                expertise: ["Artificial Intelligence", "Machine Learning", "Data Science"],
-                image: "/placeholder.svg?height=300&width=300",
-              },
-              {
-                name: "Prof. Michael Rahman",
-                title: "Dean of Business School",
-                expertise: ["Strategic Management", "International Business", "Leadership"],
-                image: "/placeholder.svg?height=300&width=300",
-              },
-              {
-                name: "Dr. Fatima Khan",
-                title: "Professor of English Literature",
-                expertise: ["Modern Literature", "Creative Writing", "Literary Criticism"],
-                image: "/placeholder.svg?height=300&width=300",
-              },
-              {
-                name: "Prof. James Wilson",
-                title: "Professor of Mathematics",
-                expertise: ["Applied Mathematics", "Statistics", "Research Methods"],
-                image: "/placeholder.svg?height=300&width=300",
-              },
-            ].map((faculty, index) => (
-              <Card key={index} className="text-center overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gray-200">
-                  <Image
-                    src={faculty.image || "/placeholder.svg"}
-                    alt={faculty.name}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-1">{faculty.name}</h3>
-                  <p className="text-teal-600 text-sm mb-3">{faculty.title}</p>
-                  <div className="flex flex-wrap gap-1 justify-center">
-                    {faculty.expertise.map((skill, skillIndex) => (
-                      <span key={skillIndex} className="bg-teal-100 text-teal-700 text-xs px-2 py-1 rounded-full">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Student Life */}
-      <section className="py-20" id="campus">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-teal-600 font-medium mb-4">Campus Life</p>
-            <h2 className="text-3xl font-bold">Vibrant Student Experience</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Modern Library",
-                description: "24/7 access to digital resources, study spaces, and research facilities.",
-                icon: <Library className="w-8 h-8" />,
-              },
-              {
-                title: "Student Clubs",
-                description: "Over 50 active clubs covering academics, sports, arts, and community service.",
-                icon: <Users className="w-8 h-8" />,
-              },
-              {
-                title: "Sports Complex",
-                description: "State-of-the-art gymnasium, swimming pool, and outdoor sports facilities.",
-                icon: <Trophy className="w-8 h-8" />,
-              },
-              {
-                title: "Cafeteria",
-                description: "Multiple dining options with healthy, affordable meals for all dietary needs.",
-                icon: <Coffee className="w-8 h-8" />,
-              },
-              {
-                title: "Arts Center",
-                description: "Theater, music rooms, and art studios for creative expression and performances.",
-                icon: <Music className="w-8 h-8" />,
-              },
-              {
-                title: "Career Services",
-                description: "Job placement assistance, internship programs, and career counseling.",
-                icon: <Briefcase className="w-8 h-8" />,
-              },
-            ].map((facility, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <div className="text-teal-600">{facility.icon}</div>
-                </div>
-                <h3 className="font-semibold text-lg mb-3">{facility.title}</h3>
-                <p className="text-gray-600">{facility.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Admissions */}
-      <section className="py-20 bg-gray-50" id="admissions">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-teal-600 font-medium mb-4">Admissions</p>
-            <h2 className="text-3xl font-bold">Join Our Academic Community</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                step: "1",
-                title: "Form Filup",
-                description: "Submit online application with required documents and transcripts.",
-                icon: <FileText className="w-6 h-6" />,
-              },
-              {
-                step: "2",
-                title: "Review",
-                description: "Academic review of credentials and entrance exam if required.",
-                icon: <UserCheck className="w-6 h-6" />,
-              },
-              {
-                step: "3",
-                title: "Approve",
-                description: "Personal interview with faculty members and admissions committee.",
-                icon: <MessageCircle className="w-6 h-6" />,
-              },
-              {
-                step: "4",
-                title: "Payment",
-                description: "Complete enrollment process and begin your academic journey.",
-                icon: <CheckCircle className="w-6 h-6" />,
-              },
-            ].map((step, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
-                <div className="bg-teal-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                  {step.step}
-                </div>
-                <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <div className="text-teal-600">{step.icon}</div>
-                </div>
-                <h3 className="font-semibold text-lg mb-3">{step.title}</h3>
-                <p className="text-gray-600 text-sm">{step.description}</p>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button size="lg" className="bg-teal-600 hover:bg-teal-700">
-              Start Your FormFilap <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. News & Events */}
-      <section className="py-20" id="news">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-teal-600 font-medium mb-4">Latest Events</p>
-            <h2 className="text-3xl font-bold">News & Events</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                type: "News",
-                title: "University Receives International Accreditation",
-                date: "January 15, 2025",
-                description:
-                  "Our institution has been awarded prestigious international accreditation for academic excellence.",
-              },
-              {
-                type: "Event",
-                title: "Annual Science Fair 2025",
-                date: "February 20, 2025",
-                description: "Students showcase innovative research projects and compete for academic recognition.",
-              },
-              {
-                type: "Achievement",
-                title: "Students Win National Debate Championship",
-                date: "January 10, 2025",
-                description:
-                  "Our debate team brings home the national championship trophy for the third consecutive year.",
-              },
-            ].map((item, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gray-300"></div>
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4 text-sm mb-3">
-                    <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-xs font-medium">
-                      {item.type}
-                    </span>
-                    <span className="flex items-center text-gray-600">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {item.date}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-3">{item.title}</h3>
-                  <p className="text-gray-600">{item.description}</p>
-                  <Button variant="ghost" className="mt-4 p-0 text-teal-600 hover:text-teal-700">
-                    Read More <ArrowRight className="ml-1 w-4 h-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="py-16 bg-teal-600">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div className="text-white">
-              <h2 className="text-2xl font-bold mb-4">Stay Connected with DIU</h2>
-              <p>Get the latest news, events, and updates from our university community.</p>
-            </div>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:outline-none"
-              />
-              <Button className="bg-teal-700 hover:bg-teal-800 rounded-l-none">
-                <Mail className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Footer */}
-      <footer className="bg-gray-900 text-white py-16" id="contact">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
-            <div className="lg:col-span-2">
-              <div className="mb-4">
-                <h3 className="text-xl font-bold">Dhaka International University</h3>
-                <p className="text-gray-400">Excellence in Higher Education</p>
-              </div>
-              <p className="text-gray-400 mb-4">
-                Committed to providing world-class education and fostering innovation, research, and academic excellence
-                for over 25 years.
+      {/* Features Overview */}
+      <section id="features"  className="w-full py-12 md:py-24 bg-gray-50 lg:py-32">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <span>Features</span>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Everything You Need to Manage Education
+              </h2>
+              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                From student enrollment to payment processing, our platform covers all aspects of educational
+                administration.
               </p>
-              <div className="flex space-x-2">
-                <Button variant="ghost" size="sm" className="p-2 text-gray-400 hover:text-white">
-                  <Twitter className="w-4 h-4" />
-                </Button>
-                <Button variant="ghost" size="sm" className="p-2 text-gray-400 hover:text-white">
-                  <Facebook className="w-4 h-4" />
-                </Button>
-                <Button variant="ghost" size="sm" className="p-2 text-gray-400 hover:text-white">
-                  <Instagram className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Academic Programs
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Faculty
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Research
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Campus Life
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Student Services</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Student Portal
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Library
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Career Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Financial Aid
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Academic Calendar
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Contact Information</h4>
-              <div className="space-y-3 text-gray-400">
-                <div className="flex items-start space-x-2">
-                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span className="text-sm">House 4, Road 1, Dhanmondi, Dhaka 1205, Bangladesh</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4" />
-                  <span className="text-sm">+880 1234 567890</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4" />
-                  <span className="text-sm">info@diu.edu.bd</span>
-                </div>
-              </div>
             </div>
           </div>
-
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p className="text-sm">
-              Copyright ©2025 Dhaka International University. All rights reserved | Designed with{" "}
-              <Heart className="w-4 h-4 inline text-red-500" /> for academic excellence
-            </p>
+          <div className=" grid  items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Users className="h-10 w-10 text-blue-600" />
+                <CardTitle>Student Management</CardTitle>
+                <CardDescription>
+                  Complete student lifecycle management with enrollment, status tracking, and profile management.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-gray-500">
+                  <li>• Student registration & approval</li>
+                  <li>• Academic session assignment</li>
+                  <li>• Department & faculty organization</li>
+                  <li>• Status tracking (Pending, Approved, Graduated)</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <MessageSquare className="h-10 w-10 text-green-600" />
+                <CardTitle>Communication Hub</CardTitle>
+                <CardDescription>
+                  Integrated messaging system with group communication and join request management.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-gray-500">
+                  <li>• Individual & group messaging</li>
+                  <li>• Student group creation</li>
+                  <li>• Join request approval system</li>
+                  <li>• Real-time communication</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CreditCard className="h-10 w-10 text-purple-600" />
+                <CardTitle>Payment Processing</CardTitle>
+                <CardDescription>
+                  Secure payment management with transaction tracking and multiple payment statuses.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-gray-500">
+                  <li>• Secure transaction processing</li>
+                  <li>• Payment status tracking</li>
+                  <li>• Transaction history</li>
+                  <li>• Automated receipts</li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
+      </section>
+      {/* Academic Structure */}
+      <section className="w-full py-12 md:py-24 lg:py-32 ">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
+            <div className="flex flex-col justify-center space-y-4">
+              <div className="space-y-2">
+                <span>Academic Organization</span>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Structured Academic Management</h2>
+                <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Organize your institution with faculties, departments, and academic sessions. Maintain clear
+                  hierarchical structure for better administration.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex items-center gap-3">
+                  <Building2 className="h-6 w-6 text-blue-600" />
+                  <div>
+                    <h4 className="font-semibold">Faculty Management</h4>
+                    <p className="text-sm text-gray-500">Organize departments under faculties</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <BookOpen className="h-6 w-6 text-green-600" />
+                  <div>
+                    <h4 className="font-semibold">Department Structure</h4>
+                    <p className="text-sm text-gray-500">Unique codes and clear organization</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Calendar className="h-6 w-6 text-purple-600" />
+                  <div>
+                    <h4 className="font-semibold">Academic Sessions</h4>
+                    <p className="text-sm text-gray-500">Year-wise student management</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <UserCheck className="h-6 w-6 text-orange-600" />
+                  <div>
+                    <h4 className="font-semibold">Role-Based Access</h4>
+                    <p className="text-sm text-gray-500">Admin, Student, and User roles</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center">
+              <Image
+                alt="Academic Structure"
+                className="aspect-square overflow-hidden rounded-xl object-cover shadow-lg"
+                height="550"
+                src="/placeholder.svg?height=550&width=550"
+                width="550"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Dashboard Preview */}
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <span>Dashboard</span>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Comprehensive Analytics & Insights</h2>
+              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Get real-time insights into your institution's performance with detailed analytics and reporting.
+              </p>
+            </div>
+          </div>
+          <div className=" grid  gap-6 py-12 lg:grid-cols-4">
+            <Card className="text-center">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-2xl font-bold text-blue-600">2,847</CardTitle>
+                <CardDescription>Total Students</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center gap-1 text-sm text-green-600">
+                  <span>+12%</span>
+                  <span className="text-gray-500">from last month</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-2xl font-bold text-green-600">156</CardTitle>
+                <CardDescription>Active Groups</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center gap-1 text-sm text-green-600">
+                  <span>+8%</span>
+                  <span className="text-gray-500">from last month</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-2xl font-bold text-purple-600">$47,892</CardTitle>
+                <CardDescription>Monthly Revenue</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center gap-1 text-sm text-green-600">
+                  <span>+15%</span>
+                  <span className="text-gray-500">from last month</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-2xl font-bold text-orange-600">98.5%</CardTitle>
+                <CardDescription>Payment Success Rate</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center gap-1 text-sm text-green-600">
+                  <span>+2%</span>
+                  <span className="text-gray-500">from last month</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+      {/* User Roles Section */}
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <span>User Management</span>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Built for Every User Type</h2>
+              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Tailored experiences for administrators, students, and general users with role-based permissions.
+              </p>
+            </div>
+          </div>
+          <div className=" grid  gap-6 py-12 lg:grid-cols-3">
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Shield className="h-12 w-12 text-red-600 mx-auto" />
+                <CardTitle>Administrators</CardTitle>
+                <CardDescription>Full system control with comprehensive management capabilities</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="text-sm text-gray-500 space-y-1">
+                  <p>• Manage all students and faculties</p>
+                  <p>• Process payments and transactions</p>
+                  <p>• View comprehensive analytics</p>
+                  <p>• Configure system settings</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <GraduationCap className="h-12 w-12 text-blue-600 mx-auto" />
+                <CardTitle>Students</CardTitle>
+                <CardDescription>Personalized dashboard for academic and social activities</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="text-sm text-gray-500 space-y-1">
+                  <p>• View academic information</p>
+                  <p>• Join and create study groups</p>
+                  <p>• Make payments securely</p>
+                  <p>• Communicate with peers</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Users className="h-12 w-12 text-green-600 mx-auto" />
+                <CardTitle>General Users</CardTitle>
+                <CardDescription>Basic access for prospective students and visitors</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="text-sm text-gray-500 space-y-1">
+                  <p>• Browse available programs</p>
+                  <p>• Submit applications</p>
+                  <p>• Access public information</p>
+                  <p>• Contact administration</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+      {/* Testimonials */}
+      <section className=" py-12 md:py-24 lg:py-32 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <span>Testimonials</span>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Trusted by Educational Institutions</h2>
+            </div>
+          </div>
+          <div className=" grid  gap-6 py-12 lg:grid-cols-3">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <CardDescription>
+                  "EduManage has transformed how we handle student administration. The integrated messaging and payment
+                  system saves us hours every day."
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-blue-600">DR</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Dr. Sarah Johnson</p>
+                    <p className="text-sm text-gray-500">Dean, University of Excellence</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <CardDescription>
+                  "The group communication feature has revolutionized how our students collaborate. It's intuitive and
+                  powerful."
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-green-600">MK</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Michael Kim</p>
+                    <p className="text-sm text-gray-500">IT Director, Tech Institute</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <CardDescription>
+                  "Payment processing is seamless and secure. Our students love the transparency and ease of use."
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-purple-600">LP</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Lisa Patel</p>
+                    <p className="text-sm text-gray-500">Registrar, Global Academy</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+    
+      {/* Footer */}
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-gray-50">
+        <p className="text-xs text-gray-500">© 2024 EduManage. All rights reserved.</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link className="text-xs hover:underline underline-offset-4 text-gray-500" href="#">
+            Terms of Service
+          </Link>
+          <Link className="text-xs hover:underline underline-offset-4 text-gray-500" href="#">
+            Privacy Policy
+          </Link>
+          <Link className="text-xs hover:underline underline-offset-4 text-gray-500" href="#">
+            Support
+          </Link>
+        </nav>
       </footer>
     </div>
   )

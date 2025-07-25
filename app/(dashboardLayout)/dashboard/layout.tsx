@@ -1,26 +1,29 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { Header } from "@/components/header";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import PrivateRoute from "@/middleware/privateRoute";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-screen w-full">
-        {/* Sidebar on the left */}
-        <AppSidebar />
+    <PrivateRoute>
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex min-h-screen w-full">
+          {/* Sidebar on the left */}
+          <AppSidebar />
 
-        {/* Right section with Header on top and content below */}
-        <div className="flex flex-col flex-1">
-          {/* Header at the top */}
-          <Header title="Dashboard" />
+          {/* Right section with Header on top and content below */}
+          <div className="flex flex-col flex-1">
+            {/* Header at the top */}
+            <Header title="Dashboard" />
 
-          {/* Main content */}
-          <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">
-            {children}
-          </main>
+            {/* Main content */}
+            <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </PrivateRoute>
   );
 };
 

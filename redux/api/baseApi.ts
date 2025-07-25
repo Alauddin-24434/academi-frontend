@@ -3,7 +3,7 @@ import { Mutex } from 'async-mutex';
 import { setUser, logout, User } from '../features/auth/authSlice';
 
 interface ITokenAndRefresh {
-  accessToken: string; 
+  accessToken: string;
   user: User;
 }
 
@@ -86,8 +86,10 @@ const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: [
     'User',
-  'Admission',
-  'Department'
+    'Admission',
+    'Department',
+    'Dashboard',
+    'Payment'
   ],
   endpoints: () => ({}),
 });

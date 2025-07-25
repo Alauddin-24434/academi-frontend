@@ -16,7 +16,7 @@ const HeroSection = () => {
         ></div>
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-10"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 "></div>
@@ -24,7 +24,7 @@ const HeroSection = () => {
         {/* Content that scrolls over the fixed background */}
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center text-white max-w-5xl mx-auto">
-            <p className="text-teal-200 mb-6 text-lg md:text-xl animate-fade-in-up font-medium tracking-wide">
+            <p className="text-teal-600 mb-6 text-lg md:text-xl animate-fade-in-up font-medium tracking-wide">
               Welcome to DIU
             </p>
             <h1
@@ -32,7 +32,7 @@ const HeroSection = () => {
               style={{ animationDelay: "0.2s" }}
             >
               Shaping Tomorrow's
-              <span className="block text-teal-300 mt-2">Leaders Today</span>
+              <span className="block text-teal-600 mt-2">Leaders Today</span>
             </h1>
             <p
               className="text-lg md:text-xl lg:text-2xl text-gray-100 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in-up hero-text-shadow"
@@ -45,7 +45,7 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up"
               style={{ animationDelay: "0.6s" }}
             >
-              <Link href={'/admission'}>
+              <Link href={'/payments'}>
               <Button
                 size="lg"
                 className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-5 text-lg font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 rounded-full"

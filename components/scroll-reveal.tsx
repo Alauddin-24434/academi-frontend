@@ -1,44 +1,46 @@
 "use client"
 
-import { useEffect, useRef, type ReactNode } from "react"
+import type React from "react"
+import { useRef, useEffect, useState } from "react"
 
 interface ScrollRevealProps {
-  children: ReactNode
-  className?: string
+  children: React.ReactNode
   delay?: number
+  duration?: number
 }
 
-export function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
-  const elementRef = useRef<HTMLDivElement>(null)
+export const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, delay = 0, duration = 500 }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const element = elementRef.current
-    if (!element) return
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add("animate-fade-in-up")
-              entry.target.classList.remove("opacity-0", "translate-y-8")
-            }, delay)
-          }
-        })
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.unobserve(entry.target)
+        }
       },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      },
+      { threshold: 0.1 }, // Trigger when 10% of the element is visible
     )
 
-    observer.observe(element)
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
 
-    return () => observer.disconnect()
-  }, [delay])
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
 
   return (
-    <div ref={elementRef} className={`opacity-0 translate-y-8 transition-all duration-700 ease-out ${className}`}>
+    <div
+      ref={ref}
+      className={`transition-all ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      style={{ transitionDuration: `${duration}ms`, transitionDelay: `${delay}ms` }}
+    >
       {children}
     </div>
   )

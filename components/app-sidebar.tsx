@@ -58,16 +58,15 @@ const studentMenuItems = [
   { title: "My Profile", url: "/dashboard/student/profile", icon: User2 },
   { title: "Join Requests", url: "/dashboard/student/group-join-requests", icon: BookOpenCheck },
   { title: "Messages", url: "/dashboard/student/messages", icon: MessageCircle },
-  { title: "Payments", url: "/dashboard/student/payments", icon: CreditCard },
-  { title: "Academic Info", url: "/dashboard/student/academic", icon: GraduationCap },
-  { title: "Notices / Announcements", url: "/dashboard/student/notices", icon: Bell },
   { title: "Admission", url: "/dashboard/admission", icon: GraduationCap },
+  { title: "Payments", url: "/dashboard/student/payments", icon: CreditCard },
+
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
   const user = useSelector(selectCurrentUser)
-  const role =user?.role;
+  const role = user?.role;
 
   let menuItems: any = []
 
@@ -81,24 +80,22 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r-0">
-      <div className="flex h-full w-full flex-col bg-teal-600">
+      <div className="flex h-full w-full flex-col bg-white shadow-sm">
         <SidebarHeader className="border-b border-white/10 p-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
-              <span className="text-lg font-bold text-white">A</span>
-            </div>
-            <span className="text-xl font-bold text-white">Akademi</span>
+          <div className="flex items-center justify-center gap-3">
+
+            <span className="text-xl font-bold text-teal-700">Akademi</span>
           </div>
         </SidebarHeader>
 
         <SidebarContent className="flex-1 p-4">
           <SidebarMenu className="space-y-2">
             {menuItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
+              <SidebarMenuItem key={item.url}>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.url}
-                  className="w-full justify-start gap-3 rounded-lg px-4 py-3 text-white/80 hover:bg-white/10 hover:text-white data-[active=true]:bg-white/20 data-[active=true]:text-white"
+                  className="w-full justify-start gap-3 rounded-lg px-4 py-3 text-gray-700 hover:bg-teal-700 hover:text-white data-[active=true]:bg-teal-600 data-[active=true]:text-white transition"
                 >
                   <Link href={item.url}>
                     <item.icon className="h-5 w-5" />
@@ -107,6 +104,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+
           </SidebarMenu>
         </SidebarContent>
 
