@@ -15,7 +15,7 @@ interface IRefreshResponse {
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/api',
+  baseUrl: '/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).academiAuth.token;
