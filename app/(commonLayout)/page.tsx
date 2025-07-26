@@ -1,12 +1,18 @@
+// pages/index.tsx
 "use client"
 import { useLenis } from "@/hooks/use-lenis"
 
-// Page Sections
+// Page Sections (existing)
 import HeroSection from "@/components/home-section/heroSection"
 import AboutSection from "@/components/home-section/aboutSection"
 import FeatureSection from "@/components/home-section/featureSection"
-import AcademicSection from "@/components/home-section/academicSection"
+
 import RoleSection from "@/components/home-section/roleSection"
+
+// NEW: Example components for home page snippets
+// You would need to create these files and their content
+import LatestEventsSection from "@/components/home-section/latestEventsSection"
+import ContactSection from "@/components/home-section/contactSection"
 
 export default function HomePage() {
   // Smooth scrolling using Lenis hook
@@ -26,8 +32,12 @@ export default function HomePage() {
       {/* ========= Feature Highlights Section ========= */}
       <FeatureSection />
 
-      {/* ========= Academic Structure Section ========= */}
-      <AcademicSection />
+      {/* --- New Sections (Snippets for Home Page) --- */}
+      {/* ========= Latest Events Section ========= */}
+      <LatestEventsSection />
+
+      {/* ========= Contact ========= */}
+      <ContactSection />
 
     </div>
   )

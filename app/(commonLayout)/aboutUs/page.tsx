@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollReveal } from '../scroll-reveal';
+
 import Image from 'next/image';
 import { Award, Building, Globe } from 'lucide-react';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 const AboutSection = () => {
   return (

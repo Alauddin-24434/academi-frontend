@@ -8,11 +8,10 @@ const FeatureSection = () => {
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
-                        <span className='text-teal-600'>Features</span>
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                            Everything You Need to Manage Education
-                        </h2>
-                        <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+
+
+                        <h1 className="text-5xl font-extrabold text-center text-gray-900 mb-4">Manage <span className="text-teal-600">Features</span></h1>
+                        <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12">
                             From student enrollment to payment processing, our platform covers all aspects of educational
                             administration.
                         </p>
