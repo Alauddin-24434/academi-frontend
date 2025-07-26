@@ -1,10 +1,9 @@
-
-
-
 "use client";
 import { useGetUserByUserIdQuery } from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { AlertTriangle, CreditCard } from "lucide-react";
 
 type Faculty = {
   id: string;
@@ -39,6 +38,7 @@ type Student = {
 export default function ProfilePage() {
   const user = useSelector(selectCurrentUser);
   const userId = user?.id as string;
+  const router = useRouter();
 
   const { data: userData, isLoading, isError } = useGetUserByUserIdQuery(userId);
 
@@ -73,25 +73,53 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-teal-50 p-6 md:p-10">
-      {/* MAIN CONTENT */}
       <section className="flex flex-col-reverse lg:flex-row gap-8 items-start">
-        {/* LEFT SIDE - INFO */}
         <div className="flex-grow bg-white rounded-2xl shadow-md p-6 md:p-10 space-y-10">
-          {/* Personal Info */}
-          <div className="">
+          {/* STATUS-BASED MESSAGE */}
+          {student.status === "PENDING" && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-5 rounded-xl shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="text-red-500 w-6 h-6 mt-1" />
+                <div>
+                  <h3 className="text-lg font-semibold text-red-700">
+                    Action Required: Payment Pending!
+                  </h3>
+                  <p className="text-sm text-red-600 mt-1">
+                    Your student profile is not approved yet. Please complete your payment to proceed.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => router.push("/payments")}
+                className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+              >
+                <CreditCard size={18} />
+                Make Payment
+              </button>
+            </div>
+          )}
 
 
+
+
+          {/* PERSONAL INFO */}
+          <div>
             <div className="flex flex-row justify-between items-center mb-4 border-b border-teal-300 pb-2 ">
               <div>
                 <h1 className="text-5xl font-extrabold text-teal-700 drop-shadow-md">
-                   Student Profile
+                  Student Information
                 </h1>
-                <p className="text-teal-500 mt-2 text-lg">
-                  Welcome back, <span className="font-semibold">{student.fullName}</span>
-                </p>
+                {student.status === "APPROVE" && (
+                  <div>
+
+                    <p className="text-sm text-teal-600 mt-1">
+                      🎉  Congratulations on becoming an official member of our institution.
+                    </p>
+                  </div>
+
+                )}
               </div>
-              {/* RIGHT SIDE - PROFILE PHOTO */}
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-md overflow-hidden border-4 border-teal-400 shadow-lg mx-auto lg:mx-0">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-md overflow-hidden border-4 border-teal-400 shadow-lg">
                 <img
                   src={student.passportPhoto}
                   alt={`${student.fullName} Passport`}
@@ -115,7 +143,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Department Info */}
+          {/* DEPARTMENT INFO */}
           <div>
             <h2 className="text-2xl font-bold text-teal-700 mb-4 border-b border-teal-300 pb-2">
               🏫 Department & Faculty
@@ -139,8 +167,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-
-
       </section>
     </main>
   );

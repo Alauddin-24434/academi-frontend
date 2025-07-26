@@ -78,8 +78,9 @@ function PaymentCard({
 
 export default function PaymentsPage() {
     const user = useSelector(selectCurrentUser);
+    console.log(user)
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
-    const { data: studentData } = useGetStudentByUserIdQuery(user?.id);
+    const { data: studentData } = useGetStudentByUserIdQuery(user?.studentId);
     const [paymentInitiate] = usePaymentInitiateMutation();
 
     const handlePaymentSubmit = async () => {

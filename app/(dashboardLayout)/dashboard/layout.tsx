@@ -6,6 +6,8 @@ import PrivateRoute from "@/middleware/privateRoute";
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <PrivateRoute>
+
+
       <SidebarProvider defaultOpen={true}>
         <div className="flex min-h-screen w-full">
           {/* Sidebar on the left */}

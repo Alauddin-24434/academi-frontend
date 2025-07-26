@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import { toast } from "sonner"
 import {
   User,
@@ -17,55 +16,46 @@ import {
   Calendar,
   Upload,
   GraduationCap,
-  Users,
-  Clock,
-  CheckCircle,
   XCircle,
-  Eye,
-  DollarSign,
+
 } from "lucide-react"
-import { useCreateStudentMutation, useGetStudentByUserIdQuery } from "@/redux/features/student/studentApi"
-import { useSelector } from "react-redux"
-import { selectCurrentUser, setUser } from "@/redux/features/auth/authSlice"
-import { useGetUserByUserIdQuery } from "@/redux/features/auth/authApi"
-import axios from "axios"
+import { useCreateStudentMutation,  } from "@/redux/features/student/studentApi"
+
 import { useAppDispatch } from "@/redux/hooks"
 import { useGetDepartmentsQuery } from "@/redux/features/department/departmentApi"
-import PrivateRoute from "@/middleware/privateRoute"
-import { useRouter, useSearchParams } from "next/navigation"
+
+import { useRouter,  } from "next/navigation"
+
+import { useGetSessionsQuery } from "@/redux/features/session/sessionApi"
+import { setUser } from "@/redux/features/auth/authSlice"
 
 
 
 
 interface FormData {
-  userId: string
   fullName: string
   fatherName: string
   motherName: string
   phone: string
-  city: string
+  password: string
   gender: string
   dateOfBirth: string
   address: string
   passportPhoto: File | null
   departmentId: string
   sessionId: string
+  email: string
 }
 
 const StudentAdmissionForm = () => {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+ 
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  // Mock user - replace with your actual selector
-  const user = useSelector(selectCurrentUser)
-  const userId = user?.id as string // Type assertion since you're sure it exists
-  console.log("user", user)
-  const { data: userData } = useGetUserByUserIdQuery(userId)
 
-  console.log("userData", userData)
-  const [createStudent] = useCreateStudentMutation()
-  const { data: departmentData } = useGetDepartmentsQuery(undefined)
 
+  const [createStudent, {isLoading}] = useCreateStudentMutation()
+  const { data: departmentData,  } = useGetDepartmentsQuery(undefined)
+  const {data:sessionData}=useGetSessionsQuery(undefined)
   const {
     register,
     handleSubmit,
@@ -77,33 +67,10 @@ const StudentAdmissionForm = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const dispatch = useAppDispatch();
-  const [seasons, setSeasons] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo') || '/';
 
-  useEffect(() => {
-    const fetchSessons = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/sessions"); // Replace with your actual API endpoint
-        setSeasons(response.data);
-      } catch (err: any) {
-        console.error("Failed to fetch seasons", err);
-        setError("Failed to load seasons.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessons();
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
 
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,13 +88,12 @@ const StudentAdmissionForm = () => {
   }
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-
     const formData = new FormData()
 
     try {
+
       const timestamp = Math.floor(new Date(data.dateOfBirth).getTime() / 1000)
       formData.append("dateOfBirth", timestamp.toString())
-      formData.append("userId", userId)
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === "passportPhoto" && value instanceof File) {
@@ -139,55 +105,40 @@ const StudentAdmissionForm = () => {
 
       const res = await createStudent(formData).unwrap();
       if (res?.success === true) {
-
         dispatch(setUser({ user: res?.data?.user, token: res?.data?.accessToken }))
+        
+        router.push("/payments")
+        reset();
       }
-      reset();
-      router.replace(redirectTo)
 
     } catch (error) {
-      setStatus("error")
+   
       toast.error("Failed to submit application. Please try again.")
-      console.log("error", error)
+      console.error("Submission error", error)
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "approved":
-        return <CheckCircle className="h-5 w-5 text-green-500" />
-      case "rejected":
-        return <XCircle className="h-5 w-5 text-red-500" />
-      default:
-        return <Clock className="h-5 w-5 text-yellow-500" />
-    }
-  }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-green-100 text-green-800 border-green-200"
-      case "rejected":
-        return "bg-red-100 text-red-800 border-red-200"
-      default:
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
-    }
-  }
 
+
+
+
+
+
+  // If the user is not a student, or is a student but has no admission status, render the form
   return (
-    <PrivateRoute>
+   
+
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
-
-
           {/* Main Form Card with Flip Animation */}
           <div className="perspective-1000">
             <div
-              className={`relative w-full transition-transform duration-700 transform-style-preserve-3d  `}
+              className={`relative w-full transition-transform duration-700 transform-style-preserve-3d`}
             >
               {/* Front Side - Form */}
               <Card className="w-full backface-hidden shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-none">
-                <CardHeader className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white  p-8">
+                <CardHeader className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 text-white p-8">
                   <CardTitle className="text-3xl font-bold flex items-center gap-3">
                     <GraduationCap className="h-8 w-8" />
                     Student Admission Form
@@ -200,7 +151,7 @@ const StudentAdmissionForm = () => {
                     {/* Personal Information Section */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
-                        <User className="h-5 w-5 text-blue-600" />
+                        <User className="h-5 w-5 text-teal-600" />
                         <h3 className="text-xl font-semibold text-gray-800">Personal Information</h3>
                       </div>
 
@@ -212,7 +163,7 @@ const StudentAdmissionForm = () => {
                           <Input
                             id="fullName"
                             {...register("fullName", { required: "Full name is required" })}
-                            className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
                             placeholder="Enter your full name"
                           />
                           {errors.fullName && (
@@ -230,7 +181,7 @@ const StudentAdmissionForm = () => {
                           <Input
                             id="fatherName"
                             {...register("fatherName", { required: "Father's name is required" })}
-                            className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
                             placeholder="Enter father's name"
                           />
                           {errors.fatherName && (
@@ -248,7 +199,7 @@ const StudentAdmissionForm = () => {
                           <Input
                             id="motherName"
                             {...register("motherName", { required: "Mother's name is required" })}
-                            className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
                             placeholder="Enter mother's name"
                           />
                           {errors.motherName && (
@@ -274,7 +225,7 @@ const StudentAdmissionForm = () => {
                                   message: "Please enter a valid phone number",
                                 },
                               })}
-                              className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                              className="h-11 pl-10 border-gray-300 focus:border-teal-500 focus:ring--500"
                               placeholder="+1 (555) 123-4567"
                             />
                           </div>
@@ -290,8 +241,8 @@ const StudentAdmissionForm = () => {
                           <Label htmlFor="gender" className="text-sm font-medium text-gray-700">
                             Gender *
                           </Label>
-                          <Select onValueChange={(value) => setValue("gender", value.toUpperCase())}>
-                            <SelectTrigger className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                          <Select onValueChange={(value) => setValue("gender", value.toUpperCase(), { shouldValidate: true })}>
+                            <SelectTrigger className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500">
                               <SelectValue placeholder="Select gender" />
                             </SelectTrigger>
                             <SelectContent>
@@ -320,7 +271,7 @@ const StudentAdmissionForm = () => {
                               {...register("dateOfBirth", {
                                 required: "Date of birth is required",
                               })}
-                              className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                              className="h-11 pl-10 border-gray-300 focus:border-teal-500 focus:ring--500"
                             />
                           </div>
                           {errors.dateOfBirth && (
@@ -333,56 +284,84 @@ const StudentAdmissionForm = () => {
                       </div>
                     </div>
 
-                    {/* Address Information */}
+                    {/* Address and Email Information */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
-                        <MapPin className="h-5 w-5 text-blue-600" />
-                        <h3 className="text-xl font-semibold text-gray-800">Address Information</h3>
+                        <MapPin className="h-5 w-5 text-teal-600" />
+                        <h3 className="text-xl font-semibold text-gray-800">Contact & Account Information</h3>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="city" className="text-sm font-medium text-gray-700">
-                            City *
-                          </Label>
-                          <Input
-                            id="city"
-                            {...register("city", { required: "City is required" })}
-                            className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Enter your city"
-                          />
-                          {errors.city && (
-                            <p className="text-red-500 text-sm flex items-center gap-1">
-                              <XCircle className="h-4 w-4" />
-                              {errors.city.message}
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="address" className="text-sm font-medium text-gray-700">
-                            Full Address *
-                          </Label>
-                          <Input
-                            id="address"
-                            {...register("address", { required: "Address is required" })}
-                            className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Enter your complete address"
-                          />
-                          {errors.address && (
-                            <p className="text-red-500 text-sm flex items-center gap-1">
-                              <XCircle className="h-4 w-4" />
-                              {errors.address.message}
-                            </p>
-                          )}
-                        </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                          Email *
+                        </Label>
+                        <Input
+                          id="email"
+                          {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                              message: "Invalid email address",
+                            },
+                          })}
+                          className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
+                          placeholder="Enter your valid email"
+                        />
+                        {errors.email && (
+                          <p className="text-red-500 text-sm flex items-center gap-1">
+                            <XCircle className="h-4 w-4" />
+                            {errors.email.message}
+                          </p>
+                        )}
                       </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                          Password *
+                        </Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 6,
+                              message: "Password must be at least 6 characters long",
+                            },
+                          })}
+                          className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
+                          placeholder="Enter your valid password"
+                        />
+                        {errors.password && (
+                          <p className="text-red-500 text-sm flex items-center gap-1">
+                            <XCircle className="h-4 w-4" />
+                            {errors.password.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="address" className="text-sm font-medium text-gray-700">
+                          Full Address *
+                        </Label>
+                        <Input
+                          id="address"
+                          {...register("address", { required: "Address is required" })}
+                          className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500"
+                          placeholder="Enter your complete address"
+                        />
+                        {errors.address && (
+                          <p className="text-red-500 text-sm flex items-center gap-1">
+                            <XCircle className="h-4 w-4" />
+                            {errors.address.message}
+                          </p>
+                        )}
+                      </div>
+
                     </div>
 
                     {/* Academic Information */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
-                        <GraduationCap className="h-5 w-5 text-blue-600" />
+                        <GraduationCap className="h-5 w-5 text-teal-600" />
                         <h3 className="text-xl font-semibold text-gray-800">Academic Information</h3>
                       </div>
 
@@ -391,8 +370,8 @@ const StudentAdmissionForm = () => {
                           <Label htmlFor="department" className="text-sm font-medium text-gray-700">
                             Department *
                           </Label>
-                          <Select onValueChange={(value) => setValue("departmentId", value)}>
-                            <SelectTrigger className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                          <Select onValueChange={(value) => setValue("departmentId", value, { shouldValidate: true })}>
+                            <SelectTrigger className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500">
                               <SelectValue placeholder="Select department" />
                             </SelectTrigger>
                             <SelectContent>
@@ -415,12 +394,12 @@ const StudentAdmissionForm = () => {
                           <Label htmlFor="session" className="text-sm font-medium text-gray-700">
                             Academic Session *
                           </Label>
-                          <Select onValueChange={(value) => setValue("sessionId", value)}>
-                            <SelectTrigger className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                          <Select onValueChange={(value) => setValue("sessionId", value, { shouldValidate: true })}>
+                            <SelectTrigger className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500">
                               <SelectValue placeholder="Select session" />
                             </SelectTrigger>
                             <SelectContent>
-                              {seasons?.data?.map((session: any) => (
+                              {sessionData?.data?.map((session: any) => ( // Use 'seasons' directly, assuming it's the array
                                 <SelectItem key={session?.id} value={session?.id}>
                                   {session?.name}
                                 </SelectItem>
@@ -440,7 +419,7 @@ const StudentAdmissionForm = () => {
                     {/* Photo Upload */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
-                        <Upload className="h-5 w-5 text-blue-600" />
+                        <Upload className="h-5 w-5 text-teal-600" />
                         <h3 className="text-xl font-semibold text-gray-800">Photo Upload</h3>
                       </div>
 
@@ -456,7 +435,7 @@ const StudentAdmissionForm = () => {
                               accept="image/*"
                               ref={fileInputRef}
                               onChange={handleImageChange}
-                              className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                              className="h-11 border-gray-300 focus:border-teal-500 focus:ring--500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-teal-700 hover:file:bg-blue-100"
                             />
                           </div>
                           {errors.passportPhoto && (
@@ -490,14 +469,15 @@ const StudentAdmissionForm = () => {
                       </div>
                     </div>
 
+
                     {/* Submit Button */}
                     <div className="flex justify-center pt-6">
                       <Button
                         type="submit"
-                        disabled={status === "loading"}
-                        className="w-full md:w-auto px-12 py-3 h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                       
+                        className="w-full md:w-auto px-12 py-3 h-12 bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                       >
-                        {status === "loading" ? (
+                        {isLoading  ? (
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                             Submitting Application...
@@ -513,15 +493,11 @@ const StudentAdmissionForm = () => {
                   </form>
                 </CardContent>
               </Card>
-
-
             </div>
           </div>
-
-
         </div>
       </div>
-    </PrivateRoute>
+   
   )
 }
 

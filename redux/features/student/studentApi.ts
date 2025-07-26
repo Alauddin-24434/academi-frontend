@@ -10,20 +10,25 @@ const studentApi = baseApi.injectEndpoints({
         method: 'POST',
         body: formData,
       }),
-      invalidatesTags: ["Admission"],
+      invalidatesTags: ["Student"],
     }),
 
     // GET: Get All Students
     getAllStudents: build.query({
       query: () => '/students', // ensure your backend route is '/students'
-      providesTags: ["Admission"],
+      providesTags: ["Student"],
     }),
+
+
 
     // GET: Get Students by User ID
     getStudentByUserId: build.query({
       query: (userId) => `/students/user/${userId}`, // adjust URL based on your backend route
-      providesTags: ["Admission"],
+      providesTags: ["Student"],
     }),
+
+
+
   }),
 });
 
@@ -31,4 +36,5 @@ export const {
   useCreateStudentMutation,
   useGetAllStudentsQuery,
   useGetStudentByUserIdQuery, // 👈 exported hook
+
 } = studentApi;

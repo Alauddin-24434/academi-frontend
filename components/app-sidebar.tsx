@@ -1,27 +1,17 @@
-"use client"
+"use client";
 
 import {
   Home,
   Users,
   GraduationCap,
   Calendar,
-  DollarSign,
-  UtensilsCrossed,
-  User,
   MessageCircle,
-  Activity,
   LayoutDashboard,
-  User2,
-  BookOpenCheck,
-  CreditCard,
-  Bell,
-} from "lucide-react"
+  LogOut,
+} from "lucide-react";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-// import { useSelector } from "react-redux";
-// import { selectUser } from "@/redux/features/auth/authSlice";
-
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -30,64 +20,62 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { useSelector } from "react-redux"
-import { selectCurrentUser } from "@/redux/features/auth/authSlice"
+} from "@/components/ui/sidebar";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCurrentUser, logout } from "@/redux/features/auth/authSlice";
 
 // Role wise menu items
 const adminMenuItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Students", url: "/dashboard/students", icon: Users },
-  { title: "Teachers", url: "/dashboard/teachers", icon: GraduationCap },
-  { title: "Event", url: "/dashboard/events", icon: Calendar },
-  { title: "Finance", url: "/dashboard/finance", icon: DollarSign },
-  { title: "Food", url: "/dashboard/food", icon: UtensilsCrossed },
-  { title: "User", url: "/dashboard/user", icon: User },
-  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
-  { title: "Latest Activity", url: "/dashboard/activity", icon: Activity },
-]
+  { title: "Teachers", url: "/dashboard/admin/teachers", icon: GraduationCap },
+  { title: "Students", url: "/dashboard/admin/students", icon: Users },
+  { title: "Events", url: "/dashboard/admin/events", icon: Calendar },
+  { title: "Faculty & Departments", url: "/dashboard/admin/facultyDepartments", icon: Calendar },
+];
 
 const teacherMenuItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Event", url: "/dashboard/events", icon: Calendar },
+  { title: "Events", url: "/dashboard/events", icon: Calendar },
   { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
-]
+];
 
 const studentMenuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "My Profile", url: "/dashboard/student/profile", icon: User2 },
-  { title: "Join Requests", url: "/dashboard/student/group-join-requests", icon: BookOpenCheck },
+  { title: "Admission & Profile", url: "/dashboard/student/admission", icon: GraduationCap },
   { title: "Messages", url: "/dashboard/student/messages", icon: MessageCircle },
-  { title: "Admission", url: "/dashboard/admission", icon: GraduationCap },
-  { title: "Payments", url: "/dashboard/student/payments", icon: CreditCard },
-
-]
+];
 
 export function AppSidebar() {
-  const pathname = usePathname()
-  const user = useSelector(selectCurrentUser)
+  const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
   const role = user?.role;
 
-  let menuItems: any = []
+  let menuItems: any = [];
 
-  if (role === "ADMIN") {
-    menuItems = adminMenuItems
-  } else if (role === "TEACHER") {
-    menuItems = teacherMenuItems
-  } else if (role === "STUDENT") {
-    menuItems = studentMenuItems
-  }
+  if (role === "ADMIN") menuItems = adminMenuItems;
+  else if (role === "TEACHER") menuItems = teacherMenuItems;
+  else if (role === "STUDENT") menuItems = studentMenuItems;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/"); // redirect after logout
+  };
 
   return (
     <Sidebar className="border-r-0">
       <div className="flex h-full w-full flex-col bg-white shadow-sm">
+        {/* Sidebar Header with / link */}
         <SidebarHeader className="border-b border-white/10 p-6">
-          <div className="flex items-center justify-center gap-3">
-
-            <span className="text-xl font-bold text-teal-700">Akademi</span>
-          </div>
+          <Link href="/" className="flex items-center justify-center gap-3">
+            <span className="text-xl font-bold text-teal-700 hover:underline">
+              Akademi
+            </span>
+          </Link>
         </SidebarHeader>
 
+        {/* Sidebar Content with menu items */}
         <SidebarContent className="flex-1 p-4">
           <SidebarMenu className="space-y-2">
             {menuItems.map((item) => (
@@ -104,17 +92,25 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
-
           </SidebarMenu>
         </SidebarContent>
 
+        {/* Sidebar Footer with logout */}
         <SidebarFooter className="border-t border-white/10 p-4">
-          <div className="text-xs text-white/60">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 text-sm text-red-600 hover:text-white hover:bg-red-600 px-3 py-2 rounded transition"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
+
+          <div className="mt-3 text-xs text-gray-500">
             <div className="font-medium">Akademi - School Admission Dashboard</div>
             <div className="mt-1">Made with ❤️ by Peterdraw</div>
           </div>
         </SidebarFooter>
       </div>
     </Sidebar>
-  )
+  );
 }

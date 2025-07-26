@@ -1,74 +1,73 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import type React from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Eye, EyeOff, ArrowLeft } from "lucide-react"
-import { useLoginUserMutation } from "@/redux/features/auth/authApi"
-import { useAppDispatch } from "@/redux/hooks"
-import { setUser } from "@/redux/features/auth/authSlice"
-import { useRouter, useSearchParams } from "next/navigation"
+ 
+} from "@/components/ui/card";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { useLoginUserMutation } from "@/redux/features/auth/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loginUser] = useLoginUserMutation()
-  const dispatch = useAppDispatch()
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginUser] = useLoginUserMutation();
+  const dispatch = useAppDispatch();
 
-  const router= useRouter();
-
+  const router = useRouter();
   const searchParams = useSearchParams();
-    const redirectTo = searchParams.get('redirectTo') || '/';
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const res = await loginUser({ email, password }).unwrap()
+      const res = await loginUser({ email, password }).unwrap();
       if (res?.success === true) {
         dispatch(
           setUser({
             user: res?.data?.user,
             token: res?.data?.accessToken,
           })
-        )
+        );
       }
-      
+
       router.replace(redirectTo);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-900 to-black flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
       <div className="w-full max-w-md">
         {/* Back to Home */}
         <Link
           href="/"
-          className="inline-flex items-center text-teal-200 hover:text-teal-400 mb-8 transition-colors"
+          className="inline-flex items-center text-teal-700 hover:text-teal-900 mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Home
         </Link>
 
-        <Card className="border border-teal-600 bg-teal-800/20 backdrop-blur-md shadow-lg">
+        <Card className="bg-white border border-teal-600 shadow-lg rounded-xl">
           <CardHeader className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <span className="text-teal-400 text-2xl font-bold">Akademi</span>
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-teal-700 text-2xl font-bold">Akademi</span>
             </div>
-            <CardTitle className="text-white text-2xl">Welcome Back</CardTitle>
-            <CardDescription className="text-teal-200">
+            
+            <CardDescription className="text-teal-600">
               Sign in to access your dashboard
             </CardDescription>
           </CardHeader>
@@ -77,7 +76,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">
+                <Label htmlFor="email" className="text-teal-900">
                   Email
                 </Label>
                 <Input
@@ -86,14 +85,14 @@ export default function LoginPage() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-teal-600/10 border-teal-500 text-white placeholder:text-teal-200"
+                  className="border-teal-400 focus:ring-teal-500"
                   required
                 />
               </div>
 
               {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">
+                <Label htmlFor="password" className="text-teal-900">
                   Password
                 </Label>
                 <div className="relative">
@@ -103,13 +102,13 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-teal-600/10 border-teal-500 text-white placeholder:text-teal-200 pr-10"
+                    className="border-teal-400 pr-10 focus:ring-teal-500"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-teal-300 hover:text-white"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-teal-500 hover:text-teal-800"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -120,12 +119,10 @@ export default function LoginPage() {
                 </div>
               </div>
 
-            
-
               {/* Sign In Button */}
               <Button
                 type="submit"
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white transition-colors"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white"
               >
                 Login
               </Button>
@@ -133,13 +130,13 @@ export default function LoginPage() {
 
             {/* Sign Up */}
             <div className="mt-6 text-center">
-              <p className="text-teal-100">
+              <p className="text-sm text-teal-700">
                 {"Don't have an account? "}
                 <Link
-                  href="/signup"
-                  className="text-teal-400 hover:text-teal-500 font-medium"
+                  href="/admission"
+                  className="text-teal-600 hover:underline font-medium"
                 >
-                  Sign up
+                  Admission
                 </Link>
               </p>
             </div>
@@ -147,5 +144,5 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

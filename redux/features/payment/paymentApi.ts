@@ -14,10 +14,18 @@ const paymentApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Payment'],
         }),
+        getPayments: build.query({
+            query: () => ({
+                url: '/payments',
+                method: 'GET',
+            }),
+            providesTags: ['Payment'],
+        }),
     }),
 });
 
 export const {
-    usePaymentInitiateMutation
+    usePaymentInitiateMutation,
+    useGetPaymentsQuery
 } = paymentApi;
 
