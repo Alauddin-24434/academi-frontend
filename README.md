@@ -1,6 +1,3 @@
-Understood\! You've provided a comprehensive `README.md` for your `Academi Backend`. Now, I'll use the information from the `package.json` you previously provided for the frontend to create a complementary `README.md` for the `academic` frontend, keeping in mind the `pnpm` preference and a developer-friendly approach.
-
------
 
 # academic
 
