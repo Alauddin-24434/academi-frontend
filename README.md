@@ -56,10 +56,8 @@ Make sure you have the following installed:
 
     ```bash
     git clone https://github.com/Alauddin-24434/academi-frontend
-    cd academic
+    cd academi-frontend
     ```
-
-    Replace `https://github.com/Alauddin-24434/academi-frontend` with the actual URL of your Git repository.
 
 2.  **Install dependencies:**
 
