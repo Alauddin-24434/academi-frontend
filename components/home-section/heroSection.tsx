@@ -54,7 +54,7 @@ const HeroSection = () => {
                   size="lg"
                   className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-5 text-lg font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 rounded-full"
                 >
-                  Student Portal <ArrowRight className="ml-3 w-5 h-5" />
+                Dashboard Portal <ArrowRight className="ml-3 w-5 h-5" />
                 </Button>
               </Link>
             ) : ( 

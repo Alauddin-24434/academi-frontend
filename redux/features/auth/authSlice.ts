@@ -8,8 +8,9 @@ export interface User {
   name: string;
   phone: string;
   email: string;
-  image?: string;
+  passportPhoto: string;
   role: string;
+  studentId: string;
 }
 
 // Redux auth state

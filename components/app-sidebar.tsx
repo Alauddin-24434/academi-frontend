@@ -36,13 +36,13 @@ const adminMenuItems = [
 const teacherMenuItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Events", url: "/dashboard/events", icon: Calendar },
-  { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
+  // { title: "Chat", url: "/dashboard/chat", icon: MessageCircle },
 ];
 
 const studentMenuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Admission & Profile", url: "/dashboard/student/admission", icon: GraduationCap },
-  { title: "Messages", url: "/dashboard/student/messages", icon: MessageCircle },
+  // { title: "Messages", url: "/dashboard/student/messages", icon: MessageCircle },
 ];
 
 export function AppSidebar() {
@@ -78,7 +78,7 @@ export function AppSidebar() {
         {/* Sidebar Content with menu items */}
         <SidebarContent className="flex-1 p-4">
           <SidebarMenu className="space-y-2">
-            {menuItems.map((item) => (
+            {menuItems.map((item:any) => (
               <SidebarMenuItem key={item.url}>
                 <SidebarMenuButton
                   asChild
@@ -96,19 +96,15 @@ export function AppSidebar() {
         </SidebarContent>
 
         {/* Sidebar Footer with logout */}
-        <SidebarFooter className="border-t border-white/10 p-4">
+        <SidebarFooter className="border-t border-white/10 p-4 mb-4">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 text-sm text-red-600 hover:text-white hover:bg-red-600 px-3 py-2 rounded transition"
+            className="w-full flex items-center gap-2 text-sm text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition"
           >
             <LogOut className="w-4 h-4" />
             Logout
           </button>
 
-          <div className="mt-3 text-xs text-gray-500">
-            <div className="font-medium">Akademi - School Admission Dashboard</div>
-            <div className="mt-1">Made with ❤️ by Peterdraw</div>
-          </div>
         </SidebarFooter>
       </div>
     </Sidebar>

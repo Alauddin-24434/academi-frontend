@@ -91,7 +91,9 @@ const baseApi = createApi({
     'Dashboard',
     'Payment',
     'Faculty',
-    'Session'
+    'Session',
+    'Teacher',
+    'Event'
   ],
   endpoints: () => ({}),
 });

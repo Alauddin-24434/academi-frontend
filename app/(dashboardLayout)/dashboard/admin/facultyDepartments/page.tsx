@@ -11,6 +11,9 @@ import {
 
 import { useForm } from 'react-hook-form';
 import React from 'react';
+import Loader from '@/components/loader/loading';
+import { catchAsync } from '@/middleware/catchAsync';
+import toast, { Toaster } from 'react-hot-toast';
 
 type Faculty = {
   id: string;
@@ -26,8 +29,8 @@ type Department = {
 };
 
 export default function AdminFacultyAndDepartmentPage() {
-  const { data: facultiesData } = useGetFacultiesQuery(undefined);
-  const { data: departmentData } = useGetDepartmentsQuery(undefined);
+  const { data: facultiesData, isLoading: facultyLoading } = useGetFacultiesQuery(undefined);
+  const { data: departmentData, isLoading: departmentLoading } = useGetDepartmentsQuery(undefined);
 
   const [createFaculty] = useCreateFacultyMutation();
   const [createDepartment] = useCreateDepartmentMutation();
@@ -44,25 +47,26 @@ export default function AdminFacultyAndDepartmentPage() {
     reset: resetDept,
   } = useForm();
 
-  const onFacultySubmit = async (data: any) => {
-    try {
-      await createFaculty(data).unwrap();
-      resetFaculty();
-    } catch (error: any) {
-      console.error('Faculty Creation Failed:', error?.data?.message || error.message);
-      alert(error?.data?.message || 'Faculty creation error');
-    }
-  };
+  const onFacultySubmit = catchAsync(async (data: any) => {
 
-  const onDepartmentSubmit = async (data: any) => {
-    try {
-      await createDepartment(data).unwrap();
-      resetDept();
-    } catch (error: any) {
-      console.error('Department Creation Failed:', error?.data?.message || error.message);
-      alert(error?.data?.message || 'Department creation error');
-    }
-  };
+    await createFaculty(data).unwrap();
+    toast.success("Faculty created successfully!");
+    resetFaculty();
+
+  })
+
+  const onDepartmentSubmit = catchAsync(async (data: any) => {
+
+    await createDepartment(data).unwrap();
+
+    toast.success("Department created successfully!");
+    resetDept();
+  })
+
+
+  if (facultyLoading || departmentLoading)
+    return <Loader />
+
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -84,7 +88,7 @@ export default function AdminFacultyAndDepartmentPage() {
               placeholder="Description"
               className="w-full px-3 py-2 border rounded"
             />
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">
               Add Faculty
             </button>
           </form>
@@ -130,7 +134,7 @@ export default function AdminFacultyAndDepartmentPage() {
                 </option>
               ))}
             </select>
-            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">
               Add Department
             </button>
           </form>
@@ -146,6 +150,7 @@ export default function AdminFacultyAndDepartmentPage() {
           </ul>
         </div>
       </div>
+      <Toaster position="top-center" />
     </div>
   );
 }

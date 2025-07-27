@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/loader/loading";
 import StatCard from "@/components/StatCard";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetOverViewsQuery } from "@/redux/features/dashboard/dashboardApi";
@@ -19,7 +20,8 @@ export default function Dashboard() {
 
   const { data: dashboardData, isLoading } = useGetOverViewsQuery(undefined);
 
-  if (isLoading) return <p className="text-center mt-10">Loading............</p>;
+  if (isLoading)
+    return <Loader />
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -72,8 +74,8 @@ export default function Dashboard() {
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold 
                         ${payment.status === "COMPLETE" ? "bg-green-100 text-green-700" :
                           payment.status === "FAILED" ? "bg-red-100 text-red-700" :
-                          payment.status === "CANCELED" ? "bg-gray-200 text-gray-700" :
-                          "bg-yellow-100 text-yellow-700"
+                            payment.status === "CANCELED" ? "bg-gray-200 text-gray-700" :
+                              "bg-yellow-100 text-yellow-700"
                         }`}>
                         {payment.status}
                       </span>

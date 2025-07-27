@@ -17,7 +17,7 @@ export function Header({ title }: HeaderProps) {
   const userId = user?.id as string;
 
   const { data: userData } = useGetUserByUserIdQuery(userId);
-  const fullName = userData?.data?.student?.fullName ?? "Loading...";
+  const fullName = userData?.data?.fullName ?? "Loading...";
   const role = userData?.data?.role ?? "";
 
   return (
@@ -25,27 +25,8 @@ export function Header({ title }: HeaderProps) {
       <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
 
       <div className="flex items-center gap-4">
-        {/* Search box */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <Input
-            placeholder="Search here..."
-            className="w-80 pl-10 bg-gray-50 border-gray-200"
-          />
-        </div>
 
-        {/* Message icon */}
-        <Button variant="ghost" size="icon" className="relative">
-          <MessageCircle className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 h-3 w-3 bg-blue-500 rounded-full"></span>
-        </Button>
-
-        {/* Bell icon */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
-        </Button>
-
+     
       
 
         {/* User Info + Avatar */}

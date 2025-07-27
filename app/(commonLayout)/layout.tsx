@@ -41,7 +41,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             {/* Right Section: Student Portal Button */}
             <Link href={'/dashboard'}>
               {/* Button is a custom component, so it stays as a child */}
-              <Button className="bg-teal-600 hover:bg-teal-700">Student Portal</Button>
+              <Button className="bg-teal-600 hover:bg-teal-700">Dashboard Portal</Button>
             </Link>
           </div>
         </div>

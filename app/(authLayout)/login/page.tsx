@@ -11,13 +11,15 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
- 
+
 } from "@/components/ui/card";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useLoginUserMutation } from "@/redux/features/auth/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useRouter, useSearchParams } from "next/navigation";
+import { catchAsync } from "@/middleware/catchAsync";
+import { Toaster } from "react-hot-toast";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,24 +32,22 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/";
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = catchAsync(async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await loginUser({ email, password }).unwrap();
-      if (res?.success === true) {
-        dispatch(
-          setUser({
-            user: res?.data?.user,
-            token: res?.data?.accessToken,
-          })
-        );
-      }
 
-      router.replace(redirectTo);
-    } catch (error) {
-      console.error(error);
+    const res = await loginUser({ email, password }).unwrap();
+    if (res?.success === true) {
+      dispatch(
+        setUser({
+          user: res?.data?.user,
+          token: res?.data?.accessToken,
+        })
+      );
     }
-  };
+
+    router.replace(redirectTo);
+
+  })
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
@@ -66,7 +66,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-center space-x-2 mb-2">
               <span className="text-teal-700 text-2xl font-bold">Akademi</span>
             </div>
-            
+
             <CardDescription className="text-teal-600">
               Sign in to access your dashboard
             </CardDescription>
@@ -143,6 +143,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
       </div>
+        <Toaster position="top-center" />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, CreditCard } from "lucide-react";
+import Loader from "@/components/loader/loading";
 
 type Faculty = {
   id: string;
@@ -43,13 +44,7 @@ export default function ProfilePage() {
   const { data: userData, isLoading, isError } = useGetUserByUserIdQuery(userId);
 
   if (isLoading)
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <p className="text-2xl font-semibold text-gray-400 animate-pulse">
-          Loading user data...
-        </p>
-      </div>
-    );
+    return <Loader />
 
   if (isError)
     return (
