@@ -168,8 +168,8 @@ const courses = [
 
 export default function PopularCoursesSection() {
   return (
-    <section >
-      <div className="container mx-auto">
+    <section className="bg-gray-50 py-20" >
+      <div className="container mx-auto ">
     
 
     
@@ -178,7 +178,7 @@ export default function PopularCoursesSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-3xl md:text-4xl font-extrabold mb-4 md:mb-0"
+                className="text-4xl md:text-5xl font-extrabold text-[#313e3b] "
               >
                 Discover Our Popular Courses
               </motion.h2>
@@ -187,7 +187,7 @@ export default function PopularCoursesSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <Button asChild variant="link" className="hover:underline text-lg font-semibold">
+                <Button asChild variant="link" className="hover:underline text-[#313e3b]  text-2xl font-semibold">
                   <Link href="/courses">View All Courses →</Link>
                 </Button>
               </motion.div>

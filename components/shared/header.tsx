@@ -16,24 +16,14 @@ export default function Header() {
             <Link href="/" className="hover:text-accent-yellow transition-colors">
               Home
             </Link>
-            <Link href="/about" className="hover:text-accent-yellow transition-colors">
-              About
-            </Link>
+        
             <Link href="/courses" className="hover:text-accent-yellow transition-colors">
               Courses
             </Link>
-            <Link href="/instructors" className="hover:text-accent-yellow transition-colors">
-              Instructors
-            </Link>
-            <Link href="/testimonial" className="hover:text-accent-yellow transition-colors">
-              Testimonial
-            </Link>
-            <Link href="/blog" className="hover:text-accent-yellow transition-colors">
-              Blog
-            </Link>
-            <Link href="/contact" className="hover:text-accent-yellow transition-colors">
-              Contact
-            </Link>
+         
+        
+           
+          
           </nav>
         </div>
         <div className="flex items-center gap-2 text-sm text-[#ffffff]">

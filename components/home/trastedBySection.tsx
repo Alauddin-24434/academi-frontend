@@ -60,7 +60,7 @@ const Marquee = ({
 
 export default function TrustedBySection() {
     return (
-        <section className="relative py-24 overflow-hidden">
+        <section className="relative py-20 overflow-hidden">
             {/* Background gradient overlay for subtle movement */}
             {/* <motion.div
         initial={{ backgroundPosition: "0% 0%" }}
@@ -82,8 +82,8 @@ export default function TrustedBySection() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Our Global Network of Trust</h2>
-                    <p className=" max-w-xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-[#313e3b]  mb-4">Our Global Network of Trust</h2>
+                    <p className=" max-w-xl mx-auto  text-gray-600">
                         Join the thousands of educators and institutions worldwide who trust our platform for exceptional learning
                         experiences.
                     </p>

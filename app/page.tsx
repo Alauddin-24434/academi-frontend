@@ -1,8 +1,8 @@
 import HeroSection from "@/components/home/hero-section"
+import { BenefitsSection } from "@/components/home/benifits-section"
 
 import PopularCoursesSection from "@/components/home/popular-courses-section"
-import StudentTestimonialSection from "@/components/home/student-testimonial-section"
-import LatestArticlesSection from "@/components/home/latest-articles-section"
+
 import TrustedBySection from "@/components/home/trastedBySection"
 
 
@@ -12,10 +12,9 @@ export default function HomePage() {
       <HeroSection />
       <TrustedBySection/>
       <PopularCoursesSection />
+      <BenefitsSection/>
 
-    
-      <StudentTestimonialSection />
-     
+   
     </>
   )
 }
